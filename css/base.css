@@ -1,0 +1,11 @@
+#daten {
+    height: 100px;
+    width: 99%;
+    margin: 0px;
+    background-color: #fefefe;
+}
+
+#map {
+    width: 99%;
+    height: 400px;
+}
