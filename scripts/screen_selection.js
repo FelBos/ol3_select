@@ -90,7 +90,6 @@ var selectInteraction = new ol.interaction.Select({
             (powerL && layer === powerLines) ||
             (solarPoly && layer === solarPolygon);
     },
-    //style: pointHighlight, lineHighlight, polygonHighlight,
     style: new ol.style.Style({
         image: new ol.style.Circle({
             radius: 12,
@@ -127,7 +126,6 @@ var selectInteraction = new ol.interaction.Select({
 
 
 // start ext js part
-// basic grid panel start
 Ext.define('Selection', {
     extend: 'Ext.data.Model',
     fields: ['id', 'osm_id', 'power', /* 'operator',*/ 'ref', 'osm_pk', 'geometry', 'feature_Id']
@@ -221,18 +219,9 @@ Ext.create('Ext.grid.Panel', {
 
 
 
-/*var pos = ol.OverlayPositioning('bottom-left');
-console.log(pos);*/
-/*var size = ol.Size();
-console.log(size);*/
-/*var co = ol.Coordinate();
-console.log(co);*/
-
-
-
 selectValues();
 
-// gets values from selected layer and adds them to grid
+// get values from selected layer and add them to grid
 function selectValues() {
     selectInteraction.on('select',
         function() {
@@ -285,7 +274,7 @@ var osm = new ol.layer.Tile({
 });
 
 
-// Create the map
+// create the map
 var map = new ol.Map({
     target: document.getElementById('map'),
     //target: 'map',
