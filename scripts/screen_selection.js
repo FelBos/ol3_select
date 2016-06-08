@@ -1,28 +1,82 @@
-// variables for (vector) layer source
-// source point layer
-// power tower
-var powerTowerSource = sources.powerTower;
-
-// source line layer
-// power lines
-var powerLinesSource = sources.powerLines;
-
-// source polygon layer
-// solar polygon
-var solarPolygonSource = sources.solarPolygon;
-
-// variables for (vector) layer
+// vector layer on aws geoserver requested via wfs-getFeatureRequest
 // point layer
 // power tower
-var powerTower = selectableLayers.powerTower.layer;
+var powerTowerSource = new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: function(extent) {
+        return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powertower&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+    },
+    strategy: ol.loadingstrategy.bbox
+});
 
+// maxFeatures=50& was taken out
 // line layer
 // power lines
-var powerLines = selectableLayers.powerLines.layer;
+var powerLinesSource = new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: function(extent) {
+        return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powerlines&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+    },
+    strategy: ol.loadingstrategy.bbox
+});
 
 // polygon layer
 // solar polygon
-var solarPolygon = selectableLayers.solarPolygon.layer;
+var solarPolygonSource = new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    url: function(extent) {
+        return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+    },
+    strategy: ol.loadingstrategy.bbox
+});
+
+// add vector layer and set style
+// point style
+// power tower
+var powerTower = new ol.layer.Vector({
+    source: powerTowerSource,
+    style: new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,0,0.1)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#636363',
+                width: 2
+            })
+        })
+    })
+});
+
+
+// line style
+// power lines
+var powerLines = new ol.layer.Vector({
+    source: powerLinesSource,
+    style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#bdbdbd',
+            width: 4
+        })
+    })
+});
+
+
+// polygon style
+// solar polygon
+var solarPolygon = new ol.layer.Vector({
+    source: solarPolygonSource,
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#fec44f'
+        }),
+        stroke: new ol.style.Stroke({
+            color: 'rgba(0, 0, 0, 0.7)',
+            width: 2
+        })
+    })
+});
 
 
 
@@ -74,17 +128,33 @@ var selectInteraction = new ol.interaction.Select({
 
 // start ext js part
 // basic grid panel start
-var dataModel = Ext.define('Selection', {
+Ext.define('Selection', {
     extend: 'Ext.data.Model',
-    fields: ['id', 'osm_id', 'power', 'operator', 'ref', 'osm_pk', 'geometry', 'feature_Id']
+    fields: ['id', 'osm_id', 'power', /* 'operator',*/ 'ref', 'osm_pk', 'geometry', 'feature_Id']
 });
 
 var selectionStore = Ext.create('Ext.data.Store', {
     model: 'Selection',
-    data: selectableLayers.powerTower.dataModel
+    data: [{
+        osm_id: 11,
+        power: 'tower',
+        operator: '50Hertz',
+        ref: 777,
+        osm_pk: 111,
+        geometry: 123,
+        feature_Id: 789
+    }, {
+        osm_id: 21,
+        power: 'tower',
+        operator: 'eon',
+        ref: 888,
+        osm_pk: 222,
+        geometry: 456,
+        feature_Id: 987
+    }]
 });
 
-var grid = Ext.create('Ext.grid.Panel', {
+Ext.create('Ext.grid.Panel', {
     renderTo: $('#grid')[0],
     store: selectionStore,
     width: '100%',
@@ -94,26 +164,102 @@ var grid = Ext.create('Ext.grid.Panel', {
         selType: 'rowmodel', // rowmodel is the default selection model
         mode: 'MULTI' // Allows selection of multiple rows
     },
-    columns: selectableLayers.powerTower.columns,
-    /*columns: {
-        selectableLayers.powerTower.columns,
-        selectableLayers.powerLines.columns
-    },*/
-    /*columns: [
-        selectableLayers.powerTower.columns,
-        selectableLayers.powerLines.columns,
-        selectableLayers.solarPolygon.columns
-    ],*/
+    columns: [{
+        text: 'OSM ID',
+        width: 100,
+        sortable: true,
+        hideable: false,
+        dataIndex: 'osm_id'
+    }, {
+        text: 'Power',
+        width: 100,
+        sortable: true,
+        hideable: false,
+        dataIndex: 'power'
+    }, {
+        text: 'Operator',
+        width: 100,
+        sortable: true,
+        hideable: false,
+        dataIndex: 'operator'
+    }, {
+        text: 'Ref',
+        width: 100,
+        sortable: true,
+        hideable: false,
+        dataIndex: 'ref'
+    }, {
+        text: 'OSM PK',
+        width: 100,
+        sortable: true,
+        hideable: false,
+        dataIndex: 'osm_pk'
+    }, {
+        text: 'Geometry',
+        width: 100,
+        sortable: true,
+        hideable: false,
+        dataIndex: 'geometry'
+    }, {
+        text: 'Feature Id',
+        width: '100 %',
+        sortable: true,
+        hideable: false,
+        dataIndex: 'feature_Id'
+    }],
     // add event listeners to panel
     listeners: {
         select: function(record, index) {
             var selectionModel = this.getSelectionModel();
+            //getRecords(selectionStore);
             var selection = this.getSelection();
             var featureId = selection[0].data.feature_Id;
         },
     }
 });
 // end ext js part
+
+
+
+/*var pos = ol.OverlayPositioning('bottom-left');
+console.log(pos);*/
+/*var size = ol.Size();
+console.log(size);*/
+/*var co = ol.Coordinate();
+console.log(co);*/
+
+
+
+selectValues();
+
+// gets values from selected layer and adds them to grid
+function selectValues() {
+    selectInteraction.on('select',
+        function() {
+            var newData = [];
+            selectInteraction.getFeatures().forEach(function(feature) {
+                // get ol feature id from selected feature
+                var fId = feature.getId();
+                console.log(fId);
+                // get properties from selectd feature
+                var prop = feature.getProperties(),
+                    newRow = {
+                        osm_id: prop.osm_id,
+                        power: prop.power,
+                        operator: prop.operator,
+                        ref: prop.ref,
+                        osm_pk: prop.osm_pk,
+                        geometry: prop.geometry,
+                        feature_Id: fId
+                    };
+                // push properties and feature to row
+                newData.push(newRow);
+            });
+            selectionStore.setData(newData);
+        }
+    );
+};
+
 
 
 // get raster layer
@@ -152,57 +298,5 @@ var map = new ol.Map({
         center: [1010401.9676446737, 7188119.030680903],
         maxZoom: 19,
         zoom: 13
-    }),
-    control: 'zoom'
-});
-
-
-
-function getMapExtent() {
-    var mapExtent = map.getView().calculateExtent(map.getSize());
-    return mapExtent;
-};
-
-
-var putFeaturesToStore = function() {
-    var newData = [];
-    selectInteraction.getFeatures().forEach(function(feature) {
-        // get ol feature id from selected feature
-        var fId = feature.getId();
-        console.log(fId);
-        // get properties from selectd feature
-        var prop = feature.getProperties(),
-            newRow = {
-                osm_id: prop.osm_id,
-                power: prop.power,
-                operator: prop.operator,
-                ref: prop.ref,
-                osm_pk: prop.osm_pk,
-                geometry: prop.geometry,
-                feature_Id: fId
-            };
-        // push properties and feature to row
-        newData.push(newRow);
-    });
-    selectionStore.setData(newData);
-};
-
-// clear selection store and unselect selected features
-var clearSelection = function() {
-    selectionStore.removeAll();
-    selectInteraction.getFeatures().clear();
-};
-
-
-// when feature is clicked
-selectInteraction.on('select', putFeaturesToStore);
-
-
-// when map is moved
-map.on('moveend', function() {
-    clearSelection();
-    powerTowerSource.forEachFeatureIntersectingExtent(getMapExtent(), function(feature) {
-        selectInteraction.getFeatures().push(feature);
-    });
-    putFeaturesToStore();
+    })
 });
