@@ -73,8 +73,50 @@ var selectInteraction = new ol.interaction.Select({
 
 
 
-var activeSelectableLayer = solarPolygon;
-var activeLayerSource = solarPolygonSource;
+/*var solarPoly = $('#solarPoly').is(':checked');
+        return (powerT && layer === powerTower) ||*/
+
+$('input[id="powerT"]').click(function() {
+    if ($(this).prop("checked") === true) {
+        console.log("layer Power Tower is checked.");
+    } else if ($(this).prop("checked") === false) {
+        console.log("layer Power Tower is unchecked.");
+    }
+});
+
+$('input[id="powerL"]').click(function() {
+    if ($(this).prop("checked") === true) {
+        console.log("layer Power Lines is checked.");
+    } else if ($(this).prop("checked") === false) {
+        console.log("layer Power Lines is unchecked.");
+    }
+});
+
+$('input[id="solarPoly"]').click(function() {
+    if ($(this).prop("checked") === true) {
+        console.log("layer Solar Polygon is checked.");
+    } else if ($(this).prop("checked") === false) {
+        console.log("layer Solar Polygon is unchecked.");
+    }
+});
+
+
+var powerTowerTest = $('#powerT').is(':checked');
+var powerLinesTest = $('#powerL').is(':checked');
+var solarPolyTest = $('#solarPoly').is(':checked');
+
+if (powerTowerTest === true) {
+    var activeSelectableLayer = powerTower;
+    var activeLayerSource = powerTowerSource;
+}
+if (powerLinesTest === true) {
+    var activeSelectableLayer = powerLines;
+    var activeLayerSource = powerLinesSource;
+}
+if (solarPolyTest === true) {
+    var activeSelectableLayer = solarPolygon;
+    var activeLayerSource = solarPolygonSource;
+}
 
 if (activeSelectableLayer === powerTower) {
     var layerDataModelField = selectableLayers.powerTower.dataModel;
