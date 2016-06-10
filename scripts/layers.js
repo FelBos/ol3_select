@@ -70,7 +70,7 @@ var selectableLayers = {
             text: 'Feature Id',
             width: 100,
             sortable: true,
-            hideable: false,
+            hideable: true,
             dataIndex: 'feature_Id'
         }],
         layer: new ol.layer.Vector({
@@ -92,7 +92,7 @@ var selectableLayers = {
     powerLines: {
         title: 'Power Lines',
         selectable: false,
-        dataModel: ['id', 'power', 'name', 'voltage', 'operator', 'cables', 'wires', 'frequency', 'voltage_ta', 'geometry'],
+        dataModel: ['id', 'power', 'name', 'voltage', 'operator', 'cables', 'wires', 'frequency', 'voltage_ta', 'geometry', 'feature_Id'],
         columns: [{
             text: 'ID',
             width: 100,
@@ -151,8 +151,14 @@ var selectableLayers = {
             text: 'Geometry',
             width: 100,
             sortable: true,
-            hideable: false,
+            hideable: true,
             dataIndex: 'geometry'
+        }, {
+            text: 'Feature Id',
+            width: 100,
+            sortable: true,
+            hideable: true,
+            dataIndex: 'feature_Id'
         }],
         layer: new ol.layer.Vector({
             source: sources.powerLines,
@@ -167,7 +173,7 @@ var selectableLayers = {
     solarPolygon: {
         title: 'Solar Polygon',
         selectable: false,
-        dataModel: ['osm_id', 'power', 'power_sour', 'generator_', 'layer', 'z_order', 'objectid', 'geometry'],
+        dataModel: ['osm_id', 'power', 'power_sour', 'generator_', 'layer', 'z_order', 'objectid', 'geometry', 'feature_Id'],
         columns: [{
             text: 'OSM ID',
             width: 100,
@@ -214,8 +220,14 @@ var selectableLayers = {
             text: 'Geometry',
             width: 100,
             sortable: true,
-            hideable: false,
+            hideable: true,
             dataIndex: 'geometry'
+        }, {
+            text: 'Feature Id',
+            width: 100,
+            sortable: true,
+            hideable: true,
+            dataIndex: 'feature_Id'
         }],
         layer: new ol.layer.Vector({
             source: sources.solarPolygon,
