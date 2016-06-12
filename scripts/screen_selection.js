@@ -73,50 +73,44 @@ var selectInteraction = new ol.interaction.Select({
 
 
 
-/*var solarPoly = $('#solarPoly').is(':checked');
-        return (powerT && layer === powerTower) ||*/
-
-$('input[id="powerT"]').click(function() {
-    if ($(this).prop("checked") === true) {
-        console.log("layer Power Tower is checked.");
-    } else if ($(this).prop("checked") === false) {
-        console.log("layer Power Tower is unchecked.");
+var powerTowerTest = function() {
+    if (($('#powerT').is(':checked')) === true) {
+        return true;
+    } else {
+        return false;
     }
-});
+};
 
-$('input[id="powerL"]').click(function() {
-    if ($(this).prop("checked") === true) {
-        console.log("layer Power Lines is checked.");
-    } else if ($(this).prop("checked") === false) {
-        console.log("layer Power Lines is unchecked.");
+var powerLinesTest = function() {
+    if (($('#powerL').is(':checked')) === true) {
+        return true;
+    } else {
+        return false;
     }
-});
+};
 
-$('input[id="solarPoly"]').click(function() {
-    if ($(this).prop("checked") === true) {
-        console.log("layer Solar Polygon is checked.");
-    } else if ($(this).prop("checked") === false) {
-        console.log("layer Solar Polygon is unchecked.");
+var solarPolyTest = function() {
+    if (($('solarPoly').is(':checked')) === true) {
+        return true;
+    } else {
+        return false;
     }
-});
+};
 
 
-var powerTowerTest = $('#powerT').is(':checked');
-var powerLinesTest = $('#powerL').is(':checked');
-var solarPolyTest = $('#solarPoly').is(':checked');
-
-if (powerTowerTest === true) {
+if (powerTowerTest() === true) {
     var activeSelectableLayer = powerTower;
     var activeLayerSource = powerTowerSource;
 }
-if (powerLinesTest === true) {
+if (powerLinesTest() === true) {
     var activeSelectableLayer = powerLines;
     var activeLayerSource = powerLinesSource;
 }
-if (solarPolyTest === true) {
+if (solarPolyTest() === true) {
     var activeSelectableLayer = solarPolygon;
     var activeLayerSource = solarPolygonSource;
 }
+
 
 if (activeSelectableLayer === powerTower) {
     var layerDataModelField = selectableLayers.powerTower.dataModel;
@@ -219,13 +213,10 @@ function getMapExtent() {
 var putFeaturesToStore = function() {
     var newData = [];
     selectInteraction.getFeatures().forEach(function(feature) {
-        // get ol feature id from selected feature
-        /*var fId = feature.getId();
-        console.log(fId);*/
-
         // get properties from selectd feature
         var prop = feature.getProperties();
         console.log('prop is ', prop);
+
         // power tower
         if (activeSelectableLayer === powerTower) {
             var newRow = {
@@ -235,10 +226,10 @@ var putFeaturesToStore = function() {
                 ref: prop.ref,
                 osm_pk: prop.osm_pk,
                 geometry: prop.geometry,
+                // get ol feature id from selected feature
                 feature_Id: feature.getId()
             };
         }
-
 
         // power lines
         else if (activeSelectableLayer === powerLines) {
@@ -257,7 +248,6 @@ var putFeaturesToStore = function() {
             };
         }
 
-
         // solar polygon
         else if (activeSelectableLayer === solarPolygon) {
             var newRow = {
@@ -272,7 +262,6 @@ var putFeaturesToStore = function() {
                 feature_Id: feature.getId()
             };
         }
-
 
         // push properties and feature to row
         newData.push(newRow);
