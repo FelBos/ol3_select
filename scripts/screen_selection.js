@@ -68,12 +68,14 @@ var selectInteraction = new ol.interaction.Select({
     }),
     toggleCondition: ol.events.condition.never,
     addCondition: ol.events.condition.altKeyOnly,
-    removeCondition: ol.events.condition.shiftKeyOnly
+    //removeCondition: ol.events.condition.shiftKeyOnly
+    //removeCondition: ol.events.condition.ctrlKeyOnly
 });
 
 
 
-var powerTowerTest = function() {
+// check which layer is selectable
+var powerTowerChecked = function() {
     if (($('#powerT').is(':checked')) === true) {
         return true;
     } else {
@@ -81,7 +83,7 @@ var powerTowerTest = function() {
     }
 };
 
-var powerLinesTest = function() {
+var powerLinesChecked = function() {
     if (($('#powerL').is(':checked')) === true) {
         return true;
     } else {
@@ -89,8 +91,8 @@ var powerLinesTest = function() {
     }
 };
 
-var solarPolyTest = function() {
-    if (($('solarPoly').is(':checked')) === true) {
+var solarPolyChecked = function() {
+    if (($('#solarPoly').is(':checked')) === true) {
         return true;
     } else {
         return false;
@@ -98,44 +100,93 @@ var solarPolyTest = function() {
 };
 
 
-if (powerTowerTest() === true) {
-    var activeSelectableLayer = powerTower;
-    var activeLayerSource = powerTowerSource;
-}
-if (powerLinesTest() === true) {
-    var activeSelectableLayer = powerLines;
-    var activeLayerSource = powerLinesSource;
-}
-if (solarPolyTest() === true) {
-    var activeSelectableLayer = solarPolygon;
-    var activeLayerSource = solarPolygonSource;
-}
-
-
-if (activeSelectableLayer === powerTower) {
+// call function layerXChecked (e.g. powerTowerChecked) to get selectable layer and set global varriable for grid accordingly
+/*if (powerTowerChecked() === true) {
     var layerDataModelField = selectableLayers.powerTower.dataModel;
     var layerDataStore = selectableLayers.powerTower.dataModel;
     var layerGridColumn = selectableLayers.powerTower.columns;
-} else if (activeSelectableLayer === powerLines) {
+} else if (powerLinesChecked() === true) {
     var layerDataModelField = selectableLayers.powerLines.dataModel;
     var layerDataStore = selectableLayers.powerLines.dataModel;
     var layerGridColumn = selectableLayers.powerLines.columns;
-} else if (activeSelectableLayer === solarPolygon) {
+} else if (solarPolyChecked() === true) {
     var layerDataModelField = selectableLayers.solarPolygon.dataModel;
     var layerDataStore = selectableLayers.solarPolygon.dataModel;
     var layerGridColumn = selectableLayers.solarPolygon.columns;
 }
+*/
+
+// call function layerXChecked (e.g. powerTowerChecked) to get selectable layer and set layerDataModelField accordingly
+// return value is accesible via function call
+var getLayerDataModelField = function() {
+    if (powerTowerChecked() === true) {
+        var layerDataModelField = selectableLayers.powerTower.dataModel;
+    } else if (powerLinesChecked() === true) {
+        var layerDataModelField = selectableLayers.powerLines.dataModel;
+    } else if (solarPolyChecked() === true) {
+        var layerDataModelField = selectableLayers.solarPolygon.dataModel;
+    }
+    return layerDataModelField;
+};
+
+// call function layerXChecked (e.g. powerTowerChecked) to get selectable layer and set layerDataStore accordingly
+// return value is accesible via function call
+var getLayerDataStore = function() {
+    if (powerTowerChecked() === true) {
+        var layerDataStore = selectableLayers.powerTower.dataModel;
+    } else if (powerLinesChecked() === true) {
+        var layerDataStore = selectableLayers.powerLines.dataModel;
+    } else if (solarPolyChecked() === true) {
+        var layerDataStore = selectableLayers.solarPolygon.dataModel;
+    }
+    return layerDataStore;
+};
+
+// call function layerXChecked (e.g. powerTowerChecked) to get selectable layer and set layerGridColumn accordingly
+// return value is accesible via function call
+var getLayerGridColumn = function() {
+    if (powerTowerChecked() === true) {
+        var layerGridColumn = selectableLayers.powerTower.columns;
+    } else if (powerLinesChecked() === true) {
+        var layerGridColumn = selectableLayers.powerLines.columns;
+    } else if (solarPolyChecked() === true) {
+        var layerGridColumn = selectableLayers.solarPolygon.columns;
+    }
+    return layerGridColumn;
+};
+
+// call function layerXChecked (e.g. powerTowerChecked) to get selectable layer and set activeLayerSource accordingly
+// return value is accesible via function call
+var getActiveLayerSource = function() {
+    if (powerTowerChecked() === true) {
+        activeLayerSource = powerTowerSource;
+        //return activeLayerSource;
+    } else if (powerLinesChecked() === true) {
+        activeLayerSource = powerLinesSource;
+        //return activeLayerSource;
+    } else if (solarPolyChecked() === true) {
+        activeLayerSource = solarPolygonSource;
+        //return activeLayerSource;
+    }
+    /* else if (powerTowerChecked() && powerLinesChecked && solarPolyChecked() !== true) {
+            clearSelection();
+            return;
+        }*/
+    return activeLayerSource;
+};
+
+
 
 
 var dataModel = Ext.define('Selection', {
     extend: 'Ext.data.Model',
-    fields: layerDataModelField
+    fields: getLayerDataModelField()
 });
 
 
 var selectionStore = Ext.create('Ext.data.Store', {
     model: 'Selection',
-    data: layerDataStore
+    data: getLayerDataStore()
 });
 
 
@@ -149,18 +200,46 @@ var gridColumn = Ext.create('Ext.grid.Panel', {
         selType: 'rowmodel', // rowmodel is the default selection model
         mode: 'MULTI' // Allows selection of multiple rows
     },
-    columns: layerGridColumn,
+    columns: getLayerGridColumn(),
     // add event listeners to panel
     listeners: {
         select: function(record, index) {
-            var selectionModel = this.getSelectionModel();
-            var selection = this.getSelection();
-            var featureId = selection[0].data.feature_Id;
+            /*var selectionModel = this.getSelectionModel();
+var selection = this.getSelection();
+*/
+            //var featureId = selection[0].data.feature_Id;
         },
     }
 });
 
 
+
+var selectedFeatures = selectInteraction.getFeatures();
+
+// a DragBox interaction used to select features by drawing boxes
+var dragBox = new ol.interaction.DragBox({
+    condition: ol.events.condition.platformModifierKeyOnly
+});
+
+// clear selection when drawing a new box and when clicking on the map
+dragBox.on('boxstart', function() {
+    //selectedFeatures.clear();
+    clearSelection();
+});
+
+
+dragBox.on('boxend', function() {
+    // features that intersect the box are put to the store
+    var extent = dragBox.getGeometry().getExtent();
+    getActiveLayerSource().forEachFeatureIntersectingExtent(extent, function(feature) {
+        selectInteraction.getFeatures().push(feature);
+    });
+    putFeaturesToStore();
+});
+
+
+
+var scaleBar = new ol.control.ScaleLine();
 
 // get raster layer
 // open cycle map
@@ -191,7 +270,7 @@ var map = new ol.Map({
     //target: 'map',
     renderer: 'canvas',
     interactions: ol.interaction.defaults().extend([
-        selectInteraction
+        selectInteraction, dragBox
     ]),
     layers: [mapQuest, solarPolygon, powerLines, powerTower],
     view: new ol.View({
@@ -199,7 +278,7 @@ var map = new ol.Map({
         maxZoom: 19,
         zoom: 13
     }),
-    control: 'zoom'
+    control: ['zoom', scaleBar]
 });
 
 
@@ -218,21 +297,22 @@ var putFeaturesToStore = function() {
         console.log('prop is ', prop);
 
         // power tower
-        if (activeSelectableLayer === powerTower) {
+        if (powerTowerChecked() === true) {
             var newRow = {
                 osm_id: prop.osm_id,
                 power: prop.power,
                 operator: prop.operator,
                 ref: prop.ref,
                 osm_pk: prop.osm_pk,
-                geometry: prop.geometry,
+                geom_wkt: prop.geom_wkt,
+                /*geometry: prop.geometry,*/
                 // get ol feature id from selected feature
                 feature_Id: feature.getId()
             };
         }
 
         // power lines
-        else if (activeSelectableLayer === powerLines) {
+        else if (powerLinesChecked() === true) {
             var newRow = {
                 id: prop.id,
                 power: prop.power,
@@ -243,13 +323,14 @@ var putFeaturesToStore = function() {
                 wires: prop.wires,
                 frequency: prop.frequency,
                 voltage_ta: prop.voltage_ta,
-                geometry: prop.geometry,
+                geom_wkt: prop.geom_wkt,
+                /*geometry: prop.geometry,*/
                 feature_Id: feature.getId()
             };
         }
 
         // solar polygon
-        else if (activeSelectableLayer === solarPolygon) {
+        else if (solarPolyChecked() === true) {
             var newRow = {
                 osm_id: prop.osm_id,
                 power: prop.power,
@@ -276,6 +357,7 @@ var clearSelection = function() {
 };
 
 
+
 // when feature is clicked
 selectInteraction.on('select', putFeaturesToStore);
 
@@ -283,7 +365,7 @@ selectInteraction.on('select', putFeaturesToStore);
 // when map is moved
 map.on('moveend', function() {
     clearSelection();
-    activeLayerSource.forEachFeatureIntersectingExtent(getMapExtent(), function(feature) {
+    getActiveLayerSource().forEachFeatureIntersectingExtent(getMapExtent(), function(feature) {
         selectInteraction.getFeatures().push(feature);
     });
     putFeaturesToStore();

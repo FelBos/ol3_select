@@ -29,50 +29,59 @@ var selectableLayers = {
     powerTower: {
         title: 'Power Tower',
         selectable: false,
-        dataModel: ['osm_id', 'power', 'operator', 'ref', 'osm_pk', 'geometry', 'feature_Id'],
+        dataModel: ['osm_id', 'power', 'operator', 'ref', 'osm_pk', 'geom_wkt', /* 'geometry',*/ 'feature_Id'],
         columns: [{
-            text: 'OSM ID',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'osm_id'
-        }, {
-            text: 'Power',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'power'
-        }, {
-            text: 'Operator',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'operator'
-        }, {
-            text: 'Ref',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'ref'
-        }, {
-            text: 'OSM PK',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'osm_pk'
-        }, {
-            text: 'Geometry',
-            width: 100,
-            sortable: true,
-            hideable: true,
-            dataIndex: 'geometry'
-        }, {
-            text: 'Feature Id',
-            width: 100,
-            sortable: true,
-            hideable: true,
-            dataIndex: 'feature_Id'
-        }],
+                text: 'OSM ID',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'osm_id'
+            }, {
+                text: 'Power',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'power'
+            }, {
+                text: 'Operator',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'operator'
+            }, {
+                text: 'Ref',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'ref'
+            }, {
+                text: 'OSM PK',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'osm_pk'
+            }, {
+                text: 'Geometry WKT',
+                width: 100,
+                sortable: true,
+                hideable: true,
+                dataIndex: 'geom_wkt'
+            },
+            /* {
+                        text: 'Geometry',
+                        width: 100,
+                        sortable: true,
+                        hideable: true,
+                        dataIndex: 'geometry'
+                    },*/
+            {
+                text: 'Feature Id',
+                width: 100,
+                sortable: true,
+                hideable: true,
+                dataIndex: 'feature_Id'
+            }
+        ],
         layer: new ol.layer.Vector({
             source: sources.powerTower,
             style: new ol.style.Style({
@@ -92,74 +101,83 @@ var selectableLayers = {
     powerLines: {
         title: 'Power Lines',
         selectable: false,
-        dataModel: ['id', 'power', 'name', 'voltage', 'operator', 'cables', 'wires', 'frequency', 'voltage_ta', 'geometry', 'feature_Id'],
+        dataModel: ['id', 'power', 'name', 'voltage', 'operator', 'cables', 'wires', 'frequency', 'voltage_ta', 'geom_wkt', /*'geometry',*/ 'feature_Id'],
         columns: [{
-            text: 'ID',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'id'
-        }, {
-            text: 'Power',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'power'
-        }, {
-            text: 'Name',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'name'
-        }, {
-            text: 'Voltage',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'voltage'
-        }, {
-            text: 'Operator',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'operator'
-        }, {
-            text: 'Cables',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'cables'
-        }, {
-            text: 'Wires',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'wires'
-        }, {
-            text: 'Frequency',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'frequency'
-        }, {
-            text: 'Voltage Tag',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'voltage_ta'
-        }, {
-            text: 'Geometry',
-            width: 100,
-            sortable: true,
-            hideable: true,
-            dataIndex: 'geometry'
-        }, {
-            text: 'Feature Id',
-            width: 100,
-            sortable: true,
-            hideable: true,
-            dataIndex: 'feature_Id'
-        }],
+                text: 'ID',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'id'
+            }, {
+                text: 'Power',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'power'
+            }, {
+                text: 'Name',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'name'
+            }, {
+                text: 'Voltage',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'voltage'
+            }, {
+                text: 'Operator',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'operator'
+            }, {
+                text: 'Cables',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'cables'
+            }, {
+                text: 'Wires',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'wires'
+            }, {
+                text: 'Frequency',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'frequency'
+            }, {
+                text: 'Voltage Tag',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'voltage_ta'
+            }, {
+                text: 'Geometry WKT',
+                width: 100,
+                sortable: true,
+                hideable: true,
+                dataIndex: 'geom_wkt'
+            },
+            /* {
+                        text: 'Geometry',
+                        width: 100,
+                        sortable: true,
+                        hideable: true,
+                        dataIndex: 'geometry'
+                    },*/
+            {
+                text: 'Feature Id',
+                width: 100,
+                sortable: true,
+                hideable: true,
+                dataIndex: 'feature_Id'
+            }
+        ],
         layer: new ol.layer.Vector({
             source: sources.powerLines,
             style: new ol.style.Style({
