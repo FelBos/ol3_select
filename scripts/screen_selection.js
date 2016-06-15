@@ -123,10 +123,6 @@ var getLayerSource = function() {
     } else if (getActiveLayer() === solarPolygon) {
         layerSource = solarPolygonSource;
     }
-    /* else if (powerTowerChecked() && powerLinesChecked && solarPolyChecked() !== true) {
-            clearSelection();
-            return;
-        }*/
     return layerSource;
 };
 
@@ -207,8 +203,6 @@ var selection = this.getSelection();
 
 
 
-var selectedFeatures = selectInteraction.getFeatures();
-
 // a DragBox interaction used to select features by drawing boxes
 var dragBox = new ol.interaction.DragBox({
     condition: ol.events.condition.platformModifierKeyOnly
@@ -216,7 +210,6 @@ var dragBox = new ol.interaction.DragBox({
 
 // clear selection when drawing a new box and when clicking on the map
 dragBox.on('boxstart', function() {
-    //selectedFeatures.clear();
     clearSelection();
 });
 
@@ -264,8 +257,6 @@ var map = new ol.Map({
     renderer: 'canvas',
     interactions: ol.interaction.defaults().extend([
         selectInteraction, dragBox
-        /*, deleteFeature
-         */
     ]),
     layers: [mapQuest, solarPolygon, powerLines, powerTower],
     view: new ol.View({
@@ -283,18 +274,22 @@ function addSelect() {
     map.addInteraction(singleClick);
 
     singleClick.getFeatures().on('add', function(event) {
-        var properties = event.element.getProperties();
-        console.log('properties are ', properties);
-        selectedFeatureId = properties.osm_id;
-        console.log('osm_id is ', selectedFeatureId);
+        if (getActiveLayer() === powerTower || getActiveLayer() === solarPolygon) {
+            var properties = event.element.getProperties();
+            selectedFeatureId = properties.osm_id;
+            removeFeatureFromStore(selectedFeatureId);
+        } else if (getActiveLayer() === powerLines) {
+            var properties = event.element.getProperties();
+            selectedFeatureId = properties.id;
+            removeFeatureFromStore(selectedFeatureId);
+        }
         /*fId = properties.feature_Id;
         console.log('feature id is ', fId);*/
-        removeFeatureFromStore(selectedFeatureId);
         //removeFeatureFromLayer(selectedFeatureId);
     });
 }
 
-function removeFeatureFromLayer(selectedFeatureId) {
+/*function removeFeatureFromLayer(selectedFeatureId) {
     var features = getLayerSource().getFeatures();
     if (features != null && features.length > 0) {
         for (x in features) {
@@ -306,19 +301,33 @@ function removeFeatureFromLayer(selectedFeatureId) {
             }
         }
     }
-}
+}*/
 
 function removeFeatureFromStore(selectedFeatureId) {
     $.each(selectionStore.getData().map, function(key, value) {
-        var keyData = selectionStore.getData().map[key].data.osm_id;
+        if (getActiveLayer() === powerTower || getActiveLayer() === solarPolygon) {
+            var keyData = selectionStore.getData().map[key].data.osm_id;
+        } else if (getActiveLayer() === powerLines) {
+            var keyData = selectionStore.getData().map[key].data.id;
+        }
+        //var keyData = selectionStore.getData().map[key].data.idFeature;
         if (keyData === parseInt(selectedFeatureId)) {
-            console.log('remove osm id', keyData, 'from store');
-            var storeOsmId = selectionStore.getData().map[key].data.osm_id;
+            if (getActiveLayer() === powerTower || getActiveLayer() === solarPolygon) {
+                var storeOsmId = selectionStore.getData().map[key].data.osm_id;
+            } else if (getActiveLayer() === powerLines) {
+                var storeOsmId = selectionStore.getData().map[key].data.id;
+            }
+            //var storeOsmId = selectionStore.getData().map[key].data.idFeature;
             var selectionArray = selectionStore.getData().items;
 
             function checkArray(selectionArray) {
-                return storeOsmId !== selectionArray.data.osm_id;
+                if (getActiveLayer() === powerTower || getActiveLayer() === solarPolygon) {
+                    return storeOsmId !== selectionArray.data.osm_id;
+                } else if (getActiveLayer() === powerLines) {
+                    return storeOsmId !== selectionArray.data.id;
+                }
             }
+            //return storeOsmId !== selectionArray.data.idFeature;
             selectionArray.filter(checkArray);
             var filteredArray = selectionArray.filter(checkArray);
 
@@ -344,7 +353,7 @@ var putFeaturesToStore = function() {
     selectInteraction.getFeatures().forEach(function(feature) {
         // get properties from selectd feature
         var prop = feature.getProperties();
-        console.log('prop is ', prop);
+        //console.log('prop is ', prop);
 
         // power tower
         if (getActiveLayer() === powerTower) {
