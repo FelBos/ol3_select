@@ -194,12 +194,26 @@ var gridColumn = Ext.create('Ext.grid.Panel', {
     listeners: {
         select: function(record, index) {
             /*var selectionModel = this.getSelectionModel();
-var selection = this.getSelection();
-*/
-            //var featureId = selection[0].data.feature_Id;
+            var selection = this.getSelection();*/
         },
     }
 });
+
+
+
+// select in table and select in map afterwards
+function tableSelectionToMap() {
+    var arrayToMap = [];
+    $.each(gridColumn.getSelectionModel().getSelection(), function(key, value) {
+        var featureId = gridColumn.getSelectionModel().getSelection()[key].data.feature_Id;
+        var feature = getLayerSource().getFeatureById(featureId);
+        arrayToMap.push(feature);
+    })
+    selectInteraction.getFeatures().clear();
+    for (var i = 0; i < arrayToMap.length; i++) {
+        selectInteraction.getFeatures().push(arrayToMap[i]);
+    }
+}
 
 
 

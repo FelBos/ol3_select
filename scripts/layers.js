@@ -191,63 +191,65 @@ var selectableLayers = {
     solarPolygon: {
         title: 'Solar Polygon',
         selectable: false,
-        dataModel: ['osm_id', 'power', 'power_sour', 'generator_', 'layer', 'z_order', 'objectid',/* 'geometry',
-*/ 'feature_Id'],
+        dataModel: ['osm_id', 'power', 'power_sour', 'generator_', 'layer', 'z_order', 'objectid', /* 'geometry',*/ 'feature_Id'],
         columns: [{
-            text: 'OSM ID',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'osm_id'
-        }, {
-            text: 'power',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'power'
-        }, {
-            text: 'Power Source',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'power_sour'
-        }, {
-            text: 'Generator',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'generator_'
-        }, {
-            text: 'Layer',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'layer'
-        }, {
-            text: 'Z Order',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'z_order'
-        }, {
-            text: 'Object ID',
-            width: 100,
-            sortable: true,
-            hideable: false,
-            dataIndex: 'objectid'
-        },/* {
-            text: 'Geometry',
-            width: 100,
-            sortable: true,
-            hideable: true,
-            dataIndex: 'geometry'
-        },*/ {
-            text: 'Feature Id',
-            width: 100,
-            sortable: true,
-            hideable: true,
-            dataIndex: 'feature_Id'
-        }],
+                text: 'OSM ID',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'osm_id'
+            }, {
+                text: 'power',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'power'
+            }, {
+                text: 'Power Source',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'power_sour'
+            }, {
+                text: 'Generator',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'generator_'
+            }, {
+                text: 'Layer',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'layer'
+            }, {
+                text: 'Z Order',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'z_order'
+            }, {
+                text: 'Object ID',
+                width: 100,
+                sortable: true,
+                hideable: false,
+                dataIndex: 'objectid'
+            },
+            /* {
+                        text: 'Geometry',
+                        width: 100,
+                        sortable: true,
+                        hideable: true,
+                        dataIndex: 'geometry'
+                    },*/
+            {
+                text: 'Feature Id',
+                width: 100,
+                sortable: true,
+                hideable: true,
+                dataIndex: 'feature_Id'
+            }
+        ],
         layer: new ol.layer.Vector({
             source: sources.solarPolygon,
             style: new ol.style.Style({

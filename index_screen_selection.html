@@ -14,15 +14,14 @@
 <body>
     <div class="container">
         <h2>Select features</h2>
-        <p>Choose the layer you want to select</p>
-        <p>
-            Selectable layers:
+        <p>Choose the layer you want to select
             <input id="powerT" type="checkbox" checked onClick=powerTowerChecked() data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Power Tower</input>
             <input id="powerL" type="checkbox" onClick=powerLinesChecked() data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Power Lines</input>
             <input id="solarPoly" type="checkbox" onClick=solarPolyChecked() data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solar Polygon</input>
         </p>
         <button onclick=clearSelection()>delete selection</button>
         <button type="button" onclick=addSelect()>remove selected features</button>
+        <button type="button" onclick=tableSelectionToMap()>select from table to map</button>
         <div id="map" class="map"></div>
         <div id="grid"></div>
     </div>
