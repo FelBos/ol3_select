@@ -28,7 +28,6 @@ var solarPolygon = selectableLayers.solarPolygon.layer;
 
 
 
-// Initialize the select interaction
 var selectInteraction = new ol.interaction.Select({
     layers: function(layer) {
         var powerT = $('#powerT').is(':checked');
@@ -37,35 +36,52 @@ var selectInteraction = new ol.interaction.Select({
         return (powerT && layer === powerTower) ||
             (powerL && layer === powerLines) ||
             (solarPoly && layer === solarPolygon);
+        /*if (getActiveLayer() === powerTower) {
+            return layer === powerTower;
+        } else if (getActiveLayer() === powerLines) {
+            return layer === powerLines;
+        } else if (getActiveLayer() === solarPolygon) {
+            return layer === solarPolygon;
+        }*/
+
+        /*layer = getActiveLayer();
+        console.log('layer is ', layer);
+        return (layer === powerTower) ||
+            (layer === powerLines) ||
+            (layer === solarPolygon);*/
+
+        /*if (getActiveLayer() === powerTower) {
+            return powerT;
+        } else if (getActiveLayer() === powerLines) {
+            return powerL;
+        } else if (getActiveLayer() === solarPolygon) {
+            return solarPoly;
+        }
+        return (powerT && layer === powerTower) ||
+            (powerL && layer === powerLines) ||
+            (solarPoly && layer === solarPolygon);*/
     },
+
     style: new ol.style.Style({
         image: new ol.style.Circle({
-            radius: 12,
             fill: new ol.style.Fill({
-                color: 'rgba(255, 100, 50, 0.5)'
+                color: [255, 100, 50, 0.5]
             }),
             stroke: new ol.style.Stroke({
-                width: 2,
-                color: 'rgba(255, 100, 50, 0.8)'
-            })
+                color: [255, 100, 50, 0.8],
+                width: 2
+            }),
+            radius: 12
         }),
-
         fill: new ol.style.Fill({
-            color: 'rgba(255, 100, 50, 0.5)'
+            color: [255, 100, 50, 0.5]
         }),
         stroke: new ol.style.Stroke({
-            width: 2,
-            color: 'rgba(64, 64, 64, 0.8)'
-        }),
-
-        fill: new ol.style.Fill({
-            color: 'rgba(255, 100, 50, 0.3)'
-        }),
-        stroke: new ol.style.Stroke({
-            width: 2,
-            color: 'rgba(255, 100, 50, 0.8)'
-        }),
+            color: [255, 100, 50, 0.8],
+            width: 2
+        })
     }),
+
     toggleCondition: ol.events.condition.never,
     addCondition: ol.events.condition.altKeyOnly
         //removeCondition: ol.events.condition.shiftKeyOnly
@@ -179,7 +195,7 @@ var selectionStore = Ext.create('Ext.data.Store', {
 });
 
 
-var gridColumn = Ext.create('Ext.grid.Panel', {
+var selectionGrid = Ext.create('Ext.grid.Panel', {
     renderTo: $('#grid')[0],
     store: selectionStore,
     width: '100%',
@@ -202,16 +218,107 @@ var gridColumn = Ext.create('Ext.grid.Panel', {
 
 
 // select in table and select in map afterwards
-function tableSelectionToMap() {
-    var arrayToMap = [];
-    $.each(gridColumn.getSelectionModel().getSelection(), function(key, value) {
-        var featureId = gridColumn.getSelectionModel().getSelection()[key].data.feature_Id;
-        var feature = getLayerSource().getFeatureById(featureId);
-        arrayToMap.push(feature);
+function tableToMap() {
+    originalSelectionToMap();
+    subSelectionToMap();
+}
+
+function originalSelectionToMap() {
+    var originalArray = [];
+
+    $.each(selectionGrid.getStore().data.items, function(key, value) {
+        var selectedFeatureId = selectionGrid.getStore().data.items[key].data.feature_Id;
+        console.log('feature id is ', selectedFeatureId);
+        var feature = getLayerSource().getFeatureById(selectedFeatureId);
+        console.log('feature is ', feature);
+        originalArray.push(feature);
     })
+    console.log('orginal array is ', originalArray);
+
     selectInteraction.getFeatures().clear();
-    for (var i = 0; i < arrayToMap.length; i++) {
+    for (var i = 0; i < originalArray.length; i++) {
+        selectInteraction.getFeatures().push(originalArray[i]);
+    }
+}
+
+function subSelectionToMap() {
+    var arrayToMap = [];
+    $.each(selectionGrid.getSelectionModel().getSelection(), function(key, value) {
+        var subFeatureId = selectionGrid.getSelectionModel().getSelection()[key].data.feature_Id;
+        console.log('sub feature id is ', subFeatureId);
+        var subFeature = getLayerSource().getFeatureById(subFeatureId);
+        console.log('feature is ', subFeature);
+        arrayToMap.push(subFeature);
+    })
+    console.log('array to map is ', arrayToMap);
+
+    /*for (var i = 0; i < arrayToMap.length; i++) {
         selectInteraction.getFeatures().push(arrayToMap[i]);
+    }*/
+
+
+
+    // style for subselecion
+    var radius = 8;
+    var width = 2;
+    var fill = new ol.style.Fill({
+        color: [255, 255, 0, 0.5]
+    });
+    var stroke = new ol.style.Stroke({
+        color: [127, 127, 127, 0.8],
+        width: width
+    });
+
+    var strokeLine = new ol.style.Stroke({
+        color: [255, 255, 0, 1]
+    });
+
+    var stylePointSubselection = [
+        new ol.style.Style({
+            image: new ol.style.Circle({
+                fill: fill,
+                stroke: stroke,
+                radius: radius,
+                zIndex: 1
+            })
+        })
+    ];
+    var styleLineSubselection = [
+        new ol.style.Style({
+            stroke: strokeLine,
+            width: width,
+            zIndex: 1
+        })
+    ];
+
+    var stylePolygonSubselection = [
+        new ol.style.Style({
+            fill: fill,
+            stroke: stroke
+        })
+    ];
+
+    //var styleSubselection = [stylePointSubselection, styleLineSubselection, stylePolygonSubselection];
+    if (getActiveLayer() === powerTower) {
+        styleSubselection = stylePointSubselection;
+    } else if (getActiveLayer() === powerLines) {
+        styleSubselection = styleLineSubselection;
+    } else if (getActiveLayer() === solarPolygon) {
+        styleSubselection = stylePolygonSubselection;
+    }
+
+    //  interaction.Select subSelection
+    var subSelection = new ol.interaction.Select({
+        layers: function(layer) {
+            return getActiveLayer();
+        },
+        style: styleSubselection
+    });
+
+    map.addInteraction(subSelection);
+
+    for (var i = 0; i < arrayToMap.length; i++) {
+        subSelection.getFeatures().push(arrayToMap[i]);
     }
 }
 
@@ -222,7 +329,7 @@ var dragBox = new ol.interaction.DragBox({
     condition: ol.events.condition.platformModifierKeyOnly
 });
 
-// clear selection when drawing a new box and when clicking on the map
+// clear selection when drawing a new box or clicking on the map
 dragBox.on('boxstart', function() {
     clearSelection();
 });
@@ -270,7 +377,7 @@ var map = new ol.Map({
     //target: 'map',
     renderer: 'canvas',
     interactions: ol.interaction.defaults().extend([
-        selectInteraction, dragBox
+        selectInteraction, dragBox /*, subSelection*/
     ]),
     layers: [mapQuest, solarPolygon, powerLines, powerTower],
     view: new ol.View({
@@ -281,6 +388,24 @@ var map = new ol.Map({
     control: ['zoom', scaleBar]
 });
 
+/*var view = new ol.View({
+    center: [1010401.9676446737, 7188119.030680903],
+    maxZoom: 19,
+    zoom: 13
+});
+
+var map = new ol.Map({
+    target: 'map'
+});
+
+map.addLayer(mapQuest);
+map.addLayer(solarPolygon);
+map.addLayer(powerLines);
+map.addLayer(powerTower);
+map.setView(view);
+
+map.getInteractions().extend([selectInteraction, dragBox]);
+map.addControl(['zoom', scaleBar]);*/
 
 
 function addSelect() {
@@ -342,7 +467,6 @@ function removeFeatureFromStore(selectedFeatureId) {
                 }
             }
             //return storeOsmId !== selectionArray.data.idFeature;
-            selectionArray.filter(checkArray);
             var filteredArray = selectionArray.filter(checkArray);
 
             var filteredArrayToStore = [];
@@ -350,7 +474,7 @@ function removeFeatureFromStore(selectedFeatureId) {
                 filteredArrayToStore.push(filteredArray[i].data);
                 selectionStore.setData(filteredArrayToStore);
             }
-        } else {}
+        }
     })
 }
 

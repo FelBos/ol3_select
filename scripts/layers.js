@@ -88,10 +88,10 @@ var selectableLayers = {
                 image: new ol.style.Circle({
                     radius: 10,
                     fill: new ol.style.Fill({
-                        color: 'rgba(255,0,0,0.1)'
+                        color: [255, 0, 0, 0.2]
                     }),
                     stroke: new ol.style.Stroke({
-                        color: '#636363',
+                        color: [159, 159, 159, 0.8],
                         width: 2
                     })
                 })
@@ -182,8 +182,8 @@ var selectableLayers = {
             source: sources.powerLines,
             style: new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: '#bdbdbd',
-                    width: 4
+                    color: [159, 159, 159],
+                    width: 2
                 })
             })
         })
@@ -257,7 +257,7 @@ var selectableLayers = {
                     color: '#fec44f'
                 }),
                 stroke: new ol.style.Stroke({
-                    color: 'rgba(0, 0, 0, 0.7)',
+                    color: [64, 64, 64, 0.7],
                     width: 2
                 })
             })
