@@ -5,6 +5,12 @@
     background-color: #fefefe;
 }
 
+/*.x-cell {
+    color: green;
+    background-color: red;
+}
+*/
+
 #map {
     height: 400px;
     width: 99%;

@@ -79,7 +79,8 @@ var selectableLayers = {
                 width: 100,
                 sortable: true,
                 hideable: true,
-                dataIndex: 'feature_Id'
+                dataIndex: 'feature_Id',
+                //tdCls: 'x-cell'
             }
         ],
         layer: new ol.layer.Vector({

@@ -53,7 +53,7 @@ var selectInteraction = new ol.interaction.Select({
         /*if (getActiveLayer() === powerTower) {
             return powerT;
         } else if (getActiveLayer() === powerLines) {
-            return powerL;
+            return powerL;ar
         } else if (getActiveLayer() === solarPolygon) {
             return solarPoly;
         }
@@ -211,6 +211,7 @@ var selectionGrid = Ext.create('Ext.grid.Panel', {
         select: function(record, index) {
             /*var selectionModel = this.getSelectionModel();
             var selection = this.getSelection();*/
+            tableToMap();
         },
     }
 });
@@ -262,7 +263,7 @@ function subSelectionToMap() {
     var radius = 8;
     var width = 2;
     var fill = new ol.style.Fill({
-        color: [255, 255, 0, 0.5]
+        color: [255, 239, 187, 1]
     });
     var stroke = new ol.style.Stroke({
         color: [127, 127, 127, 0.8],
@@ -310,16 +311,42 @@ function subSelectionToMap() {
     //  interaction.Select subSelection
     var subSelection = new ol.interaction.Select({
         layers: function(layer) {
+            /*var powerT = $('#powerT').is(':checked');
+            var powerL = $('#powerL').is(':checked');
+            var solarPoly = $('#solarPoly').is(':checked');
+            return (powerT && layer === powerTower) ||
+                (powerL && layer === powerLines) ||
+                (solarPoly && layer === solarPolygon);*/
             return getActiveLayer();
         },
         style: styleSubselection
     });
 
-    map.addInteraction(subSelection);
-
     for (var i = 0; i < arrayToMap.length; i++) {
+        subSelection.getFeatures().clear();
         subSelection.getFeatures().push(arrayToMap[i]);
     }
+    map.addInteraction(subSelection);
+
+    var panelLayout = selectionGrid.getLayout();
+    console.log('panel layout is ', panelLayout);
+    var visibleColumns = selectionGrid.getVisibleColumns();
+    console.log('visible columns are ', visibleColumns);
+    var config = selectionGrid.getConfig();
+    console.log('panel config is ', config);
+    var inher = selectionGrid.getInherited();
+    console.log('inherited is ', inher);
+    var inherConfig = selectionGrid.getInheritedConfig();
+    console.log('inherited config is ', inherConfig)
+    var state = selectionGrid.getState();
+    console.log('grid state is ', state);
+
+    // delete subselection by click on delete selection button
+    // and call function clearSelection() deletes selection and grid
+    $('#btDelete').click(function() {
+        subSelection.getFeatures().clear();
+        clearSelection();
+    });
 }
 
 
@@ -370,6 +397,65 @@ var osm = new ol.layer.Tile({
     source: new ol.source.OSM()
 });
 
+/*var osmGray = ol.layer.Tile({
+    source: new ol.source.TileWMS(({
+        url: 'http://ows.terrestris.de/osm-gray/service'
+    }))
+});*/
+
+//'http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=text%2Fhtml%3B+subtype%3Dopenlayers'
+
+//var geoServerWorldWms = new ol.layer.Tile({
+//extent: [-180.0, -90.0, 180.0, 90.0],
+//source: new ol.source.ImageWMS({
+/*source: new ol.source.TileWMS({
+    url: 'http://localhost/geoserver/aws/',
+    params: { 'LAYERS': 'nurc:Arc_Sample', 'TILED': true },
+    serverType: 'geoserver'
+})*/
+/*url: function(extent) {
+    format: new ol.format.
+    //return 'http://http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=text%2Fhtml%3B+subtype%3Dopenlayers'
+    return 'http://http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&bbox' + extent.join(',') + 'EPSG:4326';
+    strategy: ol.loadingstrategy.bbox
+}*/
+/*    source: new ol.source.ImageWMS({
+        url: 'http://http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=text%2Fhtml%3B+subtype%3Dopenlayers'
+    })
+});*/
+
+
+/*format: new ol.format.GeoJSON(),
+url: function(extent) {
+    return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+},
+strategy: ol.loadingstrategy.bbox*/
+
+/*var geoServerWorldWms = new ol.layer.Tile({
+    title: 'A sample ArcGrid file',
+    source: new ol.source.TileWMS({
+        url: 'http://localhost/geoserver/aws/nurc/wms',
+        params: { LAYERS: 'nurc:Arc_Sample', VERSION: '1.0.0' }
+        //tiled: 'TRUE'
+    })
+});*/
+
+/*var geoServerWorldWms = new ol.layer.Image({
+    title: 'A sample ArcGrid file',
+    source: new ol.source.ImageWMS({
+        url: 'http://localhost/geoserver/aws/nurc/wms',
+        params: { LAYERS: 'nurc:Arc_Sample', VERSION: '1.0.0' }
+    })
+});*/
+
+var osmGray = new ol.layer.Image({
+    source: new ol.source.ImageWMS({
+        params: { LAYERS: 'osmwms_graustufen' },
+        url: 'http://osmwms.itc-halle.de/maps/osmsw?'
+    })
+});
+
+//contextualWMSLegend=0&crs=EPSG:4326&dpiMode=all&featureCount=10&format=image/png&layers=osmwms_graustufen&styles=&url=http://osmwms.itc-halle.de/maps/osmsw?
 
 // create map
 var map = new ol.Map({
@@ -379,7 +465,7 @@ var map = new ol.Map({
     interactions: ol.interaction.defaults().extend([
         selectInteraction, dragBox /*, subSelection*/
     ]),
-    layers: [mapQuest, solarPolygon, powerLines, powerTower],
+    layers: [mapQuest, /* geoServerWorldWms,*/ /*osmGray,*/ solarPolygon, powerLines, powerTower],
     view: new ol.View({
         center: [1010401.9676446737, 7188119.030680903],
         maxZoom: 19,
@@ -548,10 +634,18 @@ var putFeaturesToStore = function() {
 };
 
 
+$('#btDelete').click(function() {
+    clearSelection();
+});
+
+
 // clear selection store and unselect selected features
 var clearSelection = function() {
     selectionStore.removeAll();
     selectInteraction.getFeatures().clear();
+    /*subSelectionToMap();
+subSelection.getFeatures().clear();
+*/
 };
 
 

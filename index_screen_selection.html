@@ -19,9 +19,9 @@
             <input id="powerL" type="checkbox" onClick=powerLinesChecked() data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Power Lines</input>
             <input id="solarPoly" type="checkbox" onClick=solarPolyChecked() data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solar Polygon</input>
         </p>
-        <button onclick=clearSelection()>delete selection</button>
-        <button type="button" onclick=addSelect()>remove selected features</button>
-        <button type="button" onclick=tableToMap()>select from table to map</button>
+        <button id="btDelete" type="button">delete selection</button>
+        <button id="btRemove" type="button" onclick=addSelect()>remove selected features</button>
+        <!--button type="button" onclick=tableToMap()>select from table to map</button-->
         <div id="map" class="map"></div>
         <div id="grid"></div>
     </div>
