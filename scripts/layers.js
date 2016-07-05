@@ -5,9 +5,9 @@ var sources = {
         format: new ol.format.GeoJSON(),
         url: function(extent) {
             // run aplication on aws
-            //return '../geoserver/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powertower&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+            return '../geoserver/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powertower&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
             // run application local
-            return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powertower&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+            //return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powertower&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
         },
         strategy: ol.loadingstrategy.bbox
     }),
@@ -15,8 +15,9 @@ var sources = {
         format: new ol.format.GeoJSON(),
         url: function(extent) {
             // run aplication on aws
-            return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powerlines&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+            return '../geoserver/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powerlines&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
             // run application local
+            //return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:powerlines&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
         },
         strategy: ol.loadingstrategy.bbox
     }),
@@ -24,9 +25,9 @@ var sources = {
         format: new ol.format.GeoJSON(),
         url: function(extent) {
             // run aplication on aws
-            //return '../geoserver/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+            return '../geoserver/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
             // run application local
-            return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
+            //return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
         },
         strategy: ol.loadingstrategy.bbox
     })
