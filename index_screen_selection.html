@@ -15,13 +15,13 @@
     <div class="container">
         <h2>Select features</h2>
         <p>Choose the layer you want to select
-            <input id="powerT" type="checkbox" checked onClick=powerTowerChecked() data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Power Tower</input>
-            <input id="powerL" type="checkbox" onClick=powerLinesChecked() data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Power Lines</input>
-            <input id="solarPoly" type="checkbox" onClick=solarPolyChecked() data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solar Polygon</input>
+            <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Power Tower</input>
+            <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Power Lines</input>
+            <input id="solarPoly" type="checkbox" data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solar Polygon</input>
         </p>
         <button id="btDelete" type="button">delete selection</button>
-        <button id="btRemove" type="button" onclick=addSelect()>remove selected features</button>
-        <!--button type="button" onclick=tableToMap()>select from table to map</button-->
+        <button id="btDeselect" type="button">deselect features</button>
+        <!--input id="deselectL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="deselectL" data-off="deselectL">deselect Features</input-->
         <div id="map" class="map"></div>
         <div id="grid"></div>
     </div>
