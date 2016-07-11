@@ -183,8 +183,8 @@ var stroke = new ol.style.Stroke({
 });
 
 var strokeLine = new ol.style.Stroke({
-    color: [255, 255, 0, 1]
-        //color: [0, 0, 0, 1]
+    //color: [255, 255, 0, 1]
+    color: [0, 0, 0, 1]
 });
 
 var stylePointSubselection = new ol.style.Style({
@@ -198,7 +198,6 @@ var stylePointSubselection = new ol.style.Style({
 
 var styleLineSubselection = new ol.style.Style({
     stroke: strokeLine,
-    width: width,
     zIndex: 1
 });
 
@@ -207,8 +206,7 @@ var stylePolygonSubselection = new ol.style.Style({
     stroke: stroke
 });
 
-//var styleSubselection = [stylePointSubselection, styleLineSubselection, stylePolygonSubselection];
-//var getSubselectionStyle = function() {
+
 if (getActiveLayerSource().layer === powerTower) {
     styleSubselection = stylePointSubselection;
 } else if (getActiveLayerSource().layer === powerLines) {
@@ -216,8 +214,6 @@ if (getActiveLayerSource().layer === powerTower) {
 } else if (getActiveLayerSource().layer === solarPolygon) {
     styleSubselection = stylePolygonSubselection;
 }
-//return styleSubselection;
-//};
 
 
 //  interaction.Select subSelection
@@ -265,6 +261,7 @@ var clonedSelection = new ol.interaction.Select({
     },
     style: styleClonedSelection
 });
+
 
 
 /*var radiusDeselection = 8;
@@ -472,7 +469,7 @@ map.addControl(['zoom', scaleBar]);*/
 
 
 
-$('#btDeselect').click(function() {
+var deselectLayer = function() {
 
     selectInteraction.on('select', function() {
         console.log('select event on selectInteraction was triggered');
@@ -481,14 +478,14 @@ $('#btDeselect').click(function() {
     var clonedFeatureArray = [];
     selectInteraction.getFeatures().forEach(function(feature) {
         var properties = feature.getProperties();
-        console.log('properties are ', properties);
-        console.log('feature is ', feature);
+        //console.log('properties are ', properties);
+        //console.log('feature is ', feature);
         var featureId = feature.getId();
-        console.log('feature id is ', featureId);
+        //console.log('feature id is ', featureId);
         var clonedFeature = feature.clone();
-        console.log('cloned feature is ', clonedFeature);
+        //console.log('cloned feature is ', clonedFeature);
         clonedFeature.setId(feature.getId());
-        console.log('cloned feature is ', clonedFeature);
+        //console.log('cloned feature is ', clonedFeature);
         clonedFeatureArray.push(clonedFeature);
         console.log('clonedFeatureArray is ', clonedFeatureArray);
     });
@@ -505,11 +502,11 @@ $('#btDeselect').click(function() {
         //console.log('select event on selectInteraction was triggered');
         clonedSelection.getFeatures().forEach(function(feature) {
             //selectInteraction.getFeatures().forEach(function(feature) {
-            var properties = feature.getProperties();
+            /*var properties = feature.getProperties();
             console.log('properties are ', properties);
             console.log('feature is ', feature);
             var featureId = feature.getId();
-            console.log('feature id is ', featureId);
+            console.log('feature id is ', featureId);*/
             featuresToFilter.push(feature);
             console.log('features to filter are ', featuresToFilter);
         });
@@ -520,9 +517,12 @@ $('#btDeselect').click(function() {
         selectInteraction.getFeatures().clear();
         var deselectionArray = []
         for (var j = 0; j < clonedFeatureArray.length; j++) {
-            if (clonedFeatureArray[j].i !== featuresToFilter[0].i) {
+            if (clonedFeatureArray.length === 1 && clonedFeatureArray[0].i === featuresToFilter[0].i) {
+                console.log('clonedFeatureArray and featuresToFilter have the same features');
+                clearSelection();
+            } else if (clonedFeatureArray[j].i !== featuresToFilter[0].i) {
                 deselectionArray.push(clonedFeatureArray[j]);
-                console.log('desection array is ', deselectionArray);
+                console.log('deselection array is ', deselectionArray);
             } else if (clonedFeatureArray[j].i === featuresToFilter[0].i) {
                 console.log('feature to filter was selected');
                 var filtered = clonedFeatureArray[j].i
@@ -532,29 +532,28 @@ $('#btDeselect').click(function() {
         for (k = 0; k < deselectionArray.length; k++) {
             selectInteraction.getFeatures().push(deselectionArray[k]);
         }
-        clonedSelection.getFeatures().clear();
+        map.removeInteraction(subSelection);
         map.addInteraction(selectInteraction);
         putFeaturesToStore();
     }
-});
+    //checkDeselectL();
+};
 
+function checkDeselectL() {
+    console.log('checkDeselectL was called');
+    if (($('#deselectL').is(':checked')) === true) {
+        console.log('deselectL is true');
+        deselectLayer();
+    } else if (($('#deselectL').is(':checked')) !== true) {
+        console.log('deselectL is false');
+    }
+}
 
-/*function copySelection() {
-    var clonedFeatureArray = [];
-    selectInteraction.getFeatures().forEach(function(feature) {
-        var properties = feature.getProperties();
-        console.log('properties are ', properties);
-        console.log('feature is ', feature);
-        var featureId = feature.getId();
-        console.log('feature id is ', featureId);
-        clonedFeatureArray.push(feature);
-        console.log('cloned feature array is ', clonedFeatureArray);
-        var clonedFeature = feature.clone();
-        console.log('cloned feature is ', clonedFeature);
-        clonedFeature.setId(feature.getId());
-        console.log('cloned feature is ', clonedFeature);
-   })
-}*/
+($('#deselectL').change(function() {
+    console.log('change event on checkbox was triggered');
+    checkDeselectL();
+}));
+
 
 
 /*function deselect() {
@@ -591,8 +590,6 @@ var putFeaturesToStore = function() {
     selectInteraction.getFeatures().forEach(function(feature) {
         // get properties of selected feature
         var prop = feature.getProperties();
-        //console.log('prop is ', prop);
-        console.log('feature is ', feature);
 
         // power tower
         if (getActiveLayerSource().layer === powerTower) {
@@ -646,17 +643,6 @@ var putFeaturesToStore = function() {
         newData.push(newRow);
         selectionStore.setData(newData);
         console.log('new data is ', newData);
-
-        /*function getSelectedFeatures() {
-            var selectedObject = newData;
-            console.log('selected object is ', selectedObject);
-            var selectedArray = newData[0];
-            console.log('selected array first entry is ', selectedArray);
-            selectedArrayId = newData[0].feature_Id;
-            console.log('selected array first entry id is ', selectedArrayId);
-        }
-        getSelectedFeatures();*/
-
     });
 };
 
@@ -664,8 +650,6 @@ var putFeaturesToStore = function() {
 
 $('#btDelete').click(function() {
     clearSelection();
-    //map.removeInteraction(selectInteraction);
-    //map.removeInteraction(subSelection);
 });
 
 
@@ -674,27 +658,30 @@ var clearSelection = function() {
     selectionStore.removeAll();
     selectInteraction.getFeatures().clear();
     subSelection.getFeatures().clear();
+    map.removeInteraction(subSelection);
+    map.removeInteraction(clonedSelection);
+    map.addInteraction(selectInteraction);
 };
 
 
 
 // when feature is clicked
 selectInteraction.on('select', putFeaturesToStore);
-
 /*selectInteraction.on('select', function() {
-    var clonedFeatureArray = [];
+    console.log('select event selectInteraction was triggered');
+    console.log('call put features to store');
+
     selectInteraction.getFeatures().forEach(function(feature) {
         var properties = feature.getProperties();
         console.log('properties are ', properties);
         console.log('feature is ', feature);
         var featureId = feature.getId();
         console.log('feature id is ', featureId);
-        clonedFeatureArray.push(feature);
-        console.log('cloned feature array is ', clonedFeatureArray);
-        var clonedFeature = feature.clone();
-        console.log('cloned feature is ', clonedFeature);
     });
+
+    putFeaturesToStore();
 });*/
+
 
 
 // when map is moved
@@ -708,7 +695,7 @@ map.on('moveend', function() {
 
 
 
-/*map.on('click', function() {
+map.on('click', function() {
     console.log('event click on map was triggered');
     selectionStore.removeAll();
-});*/
+});
