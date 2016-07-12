@@ -36,7 +36,6 @@ var sources = {
 
 
 // style variables
-
 var stroke = new ol.style.Stroke({
     color: [127, 127, 127, 0.8],
     width: 2
@@ -271,10 +270,6 @@ var selectableLayers = {
                 fill: new ol.style.Fill({
                     color: '#fec44f'
                 }),
-                /*stroke: new ol.style.Stroke({
-                    color: [64, 64, 64, 0.7],
-                    width: 2
-                })*/
                 stroke
             })
         })
