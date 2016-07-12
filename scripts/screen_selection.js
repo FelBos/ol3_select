@@ -28,6 +28,25 @@ var solarPolygon = selectableLayers.solarPolygon.layer;
 
 
 
+// style for selectInteraction
+var fillSelectInteraction = new ol.style.Fill({
+    color: [255, 100, 50, 0.5]
+});
+var widthSelectInteraction = 2;
+var strokeSelectInteraction = new ol.style.Stroke({
+    color: [255, 100, 50, 0.8],
+    width: widthSelectInteraction
+});
+var styleSelectInteraction = new ol.style.Style({
+    image: new ol.style.Circle({
+        fill: fillSelectInteraction,
+        stroke: strokeSelectInteraction,
+        radius: 12
+    }),
+    fill: fillSelectInteraction,
+    stroke: strokeSelectInteraction
+});
+
 var selectInteraction = new ol.interaction.Select({
     layers: function(layer) {
         var powerT = $('#powerT').is(':checked');
@@ -37,32 +56,8 @@ var selectInteraction = new ol.interaction.Select({
             (powerL && layer === powerLines) ||
             (solarPoly && layer === solarPolygon);
     },
-
-    style: new ol.style.Style({
-        image: new ol.style.Circle({
-            fill: new ol.style.Fill({
-                color: [255, 100, 50, 0.5]
-            }),
-            stroke: new ol.style.Stroke({
-                color: [255, 100, 50, 0.8],
-                width: 2
-            }),
-            radius: 12
-        }),
-        fill: new ol.style.Fill({
-            color: [255, 100, 50, 0.5]
-        }),
-        stroke: new ol.style.Stroke({
-            color: [255, 100, 50, 0.8],
-            width: 2
-        })
-    }),
-
-    //toggleCondition: ol.events.condition.never,
+    style: styleSelectInteraction,
     addCondition: ol.events.condition.altKeyOnly
-        //addCondition: ol.events.condition.singleClick
-        //removeCondition: ol.events.condition.shiftKeyOnly
-        //removeCondition: ol.events.condition.ctrlKeyOnly
         //addCondition: ol.events.condition.altShiftKeysOnly
 });
 
@@ -108,7 +103,6 @@ var getLayerDataModelField = function() {
 // call function getActiveLayer to get selectable layer and set layerDataStore accordingly
 // return value is accesible via function call
 var getLayerDataStore = function() {
-    //if (getActiveLayer() === powerTower) {
     if (getActiveLayerSource().layer === powerTower) {
         var layerDataStore = selectableLayers.powerTower.dataModel;
     } else if (getActiveLayerSource().layer === powerLines) {
@@ -174,16 +168,12 @@ var radius = 8;
 var width = 2;
 var fill = new ol.style.Fill({
     color: [255, 239, 187, 1]
-        //color: [0, 0, 0, 1]
 });
 var stroke = new ol.style.Stroke({
     color: [127, 127, 127, 0.8],
-    //color: [0, 0, 0, 0.8],
     width: width
 });
-
 var strokeLine = new ol.style.Stroke({
-    //color: [255, 255, 0, 1]
     color: [0, 0, 0, 1]
 });
 
@@ -191,14 +181,12 @@ var stylePointSubselection = new ol.style.Style({
     image: new ol.style.Circle({
         fill: fill,
         stroke: stroke,
-        radius: radius,
-        zIndex: 1
+        radius: radius
     })
 });
 
 var styleLineSubselection = new ol.style.Style({
-    stroke: strokeLine,
-    zIndex: 1
+    stroke: strokeLine
 });
 
 var stylePolygonSubselection = new ol.style.Style({
@@ -216,7 +204,6 @@ if (getActiveLayerSource().layer === powerTower) {
 }
 
 
-//  interaction.Select subSelection
 var subSelection = new ol.interaction.Select({
     layers: function(layer) {
         /*var powerT = $('#powerT').is(':checked');
@@ -227,7 +214,8 @@ var subSelection = new ol.interaction.Select({
             (solarPoly && layer === solarPolygon);*/
         return getActiveLayerSource().layer;
     },
-    style: styleSubselection
+    style: styleSubselection,
+    zIndex: 1
 });
 
 
@@ -261,38 +249,6 @@ var clonedSelection = new ol.interaction.Select({
     },
     style: styleClonedSelection
 });
-
-
-
-/*var radiusDeselection = 8;
-var widthDeselection = 4;
-var fillDeselection = new ol.style.Fill({
-    color: [0, 255, 0, 1]
-});
-var strokeDeselection = new ol.style.Stroke({
-    color: [0, 0, 255, 0.8],
-    width: widthDeselection
-});
-
-var stylePointDeselection = new ol.style.Style({
-    image: new ol.style.Circle({
-        fill: fillDeselection,
-        stroke: strokeDeselection,
-        radius: radiusDeselection,
-        zIndex: 1
-    })
-});
-
-if (getActiveLayerSource().layer === powerTower) {
-    styleDeselection = stylePointDeselection;
-}
-
-var deselection = new ol.interaction.Select({
-    layers: function(layer) {
-        return getActiveLayerSource().layer;
-    },
-    style: styleDeselection
-});*/
 
 
 
@@ -469,25 +425,17 @@ map.addControl(['zoom', scaleBar]);*/
 
 
 
-var deselectLayer = function() {
-
-    selectInteraction.on('select', function() {
-        console.log('select event on selectInteraction was triggered');
-    });
+// deselection via checkbox
+// it is not neccessary to press shit-key for deselection
+/*var deselectLayer = function() {
 
     var clonedFeatureArray = [];
     selectInteraction.getFeatures().forEach(function(feature) {
         var properties = feature.getProperties();
-        //console.log('properties are ', properties);
-        //console.log('feature is ', feature);
         var featureId = feature.getId();
-        //console.log('feature id is ', featureId);
         var clonedFeature = feature.clone();
-        //console.log('cloned feature is ', clonedFeature);
         clonedFeature.setId(feature.getId());
-        //console.log('cloned feature is ', clonedFeature);
         clonedFeatureArray.push(clonedFeature);
-        console.log('clonedFeatureArray is ', clonedFeatureArray);
     });
     for (i = 0; i < clonedFeatureArray.length; i++) {
         clonedSelection.getFeatures().push(clonedFeatureArray[i]);
@@ -497,18 +445,8 @@ var deselectLayer = function() {
 
     var featuresToFilter = [];
     clonedSelection.on('select', function() {
-        //selectInteraction.on('select', function() {
-        console.log('select event on cloned selection was triggered');
-        //console.log('select event on selectInteraction was triggered');
         clonedSelection.getFeatures().forEach(function(feature) {
-            //selectInteraction.getFeatures().forEach(function(feature) {
-            /*var properties = feature.getProperties();
-            console.log('properties are ', properties);
-            console.log('feature is ', feature);
-            var featureId = feature.getId();
-            console.log('feature id is ', featureId);*/
             featuresToFilter.push(feature);
-            console.log('features to filter are ', featuresToFilter);
         });
         deselectFeatures();
     });
@@ -518,15 +456,11 @@ var deselectLayer = function() {
         var deselectionArray = []
         for (var j = 0; j < clonedFeatureArray.length; j++) {
             if (clonedFeatureArray.length === 1 && clonedFeatureArray[0].i === featuresToFilter[0].i) {
-                console.log('clonedFeatureArray and featuresToFilter have the same features');
                 clearSelection();
             } else if (clonedFeatureArray[j].i !== featuresToFilter[0].i) {
                 deselectionArray.push(clonedFeatureArray[j]);
-                console.log('deselection array is ', deselectionArray);
             } else if (clonedFeatureArray[j].i === featuresToFilter[0].i) {
-                console.log('feature to filter was selected');
                 var filtered = clonedFeatureArray[j].i
-                console.log('filtered id is ', filtered);
             }
         }
         for (k = 0; k < deselectionArray.length; k++) {
@@ -535,9 +469,24 @@ var deselectLayer = function() {
         map.removeInteraction(subSelection);
         map.addInteraction(selectInteraction);
         putFeaturesToStore();
+        setCurrentSelection();
     }
-    //checkDeselectL();
+
+    function setCurrentSelection() {
+        var currentSelectionArray = [];
+        selectInteraction.getFeatures().forEach(function(feature) {
+            var properties = feature.getProperties();
+            var currentFeatureId = feature.getId();
+            var currentFeature = feature.clone();
+            currentFeature.setId(feature.getId());
+            currentSelectionArray.push(currentFeature);
+        });
+    };
 };
+
+
+map.on('singleclick', checkDeselectL);
+
 
 function checkDeselectL() {
     console.log('checkDeselectL was called');
@@ -552,30 +501,7 @@ function checkDeselectL() {
 ($('#deselectL').change(function() {
     console.log('change event on checkbox was triggered');
     checkDeselectL();
-}));
-
-
-
-/*function deselect() {
-    copySelection();
-    //filterSelection();
-    //deselectByFilter();
-}
-
-
-selectInteraction.on('select', function() {
-    console.log('on select event on interaction was triggered');
-    checkDeselection();
-});
-
-function checkDeselection() {
-    console.log('deselectL was checked');
-    if (($('#deselectL').is(':checked')) === true) {
-        console.log('deselectL check was true');
-        //deselect();
-        copySelection();
-    }
-}*/
+}));*/
 
 
 
@@ -583,6 +509,7 @@ function getMapExtent() {
     var mapExtent = map.getView().calculateExtent(map.getSize());
     return mapExtent;
 }
+
 
 
 var putFeaturesToStore = function() {
@@ -642,7 +569,6 @@ var putFeaturesToStore = function() {
         // push properties and feature to row
         newData.push(newRow);
         selectionStore.setData(newData);
-        console.log('new data is ', newData);
     });
 };
 
@@ -651,6 +577,7 @@ var putFeaturesToStore = function() {
 $('#btDelete').click(function() {
     clearSelection();
 });
+
 
 
 // clear selection store and unselect selected features
@@ -665,22 +592,19 @@ var clearSelection = function() {
 
 
 
-// when feature is clicked
-selectInteraction.on('select', putFeaturesToStore);
-/*selectInteraction.on('select', function() {
-    console.log('select event selectInteraction was triggered');
-    console.log('call put features to store');
-
-    selectInteraction.getFeatures().forEach(function(feature) {
-        var properties = feature.getProperties();
-        console.log('properties are ', properties);
-        console.log('feature is ', feature);
-        var featureId = feature.getId();
-        console.log('feature id is ', featureId);
-    });
-
+// when feature is selected
+selectInteraction.on('select', function() {
+    map.removeInteraction(subSelection);
     putFeaturesToStore();
-});*/
+});
+
+subSelection.on('select', function() {
+    putFeaturesToStore();
+    map.removeInteraction(selectInteraction);
+    map.addInteraction(selectInteraction);
+    map.removeInteraction(subSelection);
+    map.addInteraction(subSelection);
+});
 
 
 
@@ -695,7 +619,8 @@ map.on('moveend', function() {
 
 
 
-map.on('click', function() {
-    console.log('event click on map was triggered');
+// remove features from selection and clear store
+map.on('singleclick', function() {
     selectionStore.removeAll();
+    map.removeInteraction(subSelection);
 });

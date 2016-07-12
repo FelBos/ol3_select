@@ -33,6 +33,17 @@ var sources = {
     })
 };
 
+
+
+// style variables
+
+var stroke = new ol.style.Stroke({
+    color: [127, 127, 127, 0.8],
+    width: 2
+});
+
+
+
 // title, data model, columns and style for respective layer
 var selectableLayers = {
     powerTower: {
@@ -100,10 +111,7 @@ var selectableLayers = {
                     fill: new ol.style.Fill({
                         color: [255, 0, 0, 0.2]
                     }),
-                    stroke: new ol.style.Stroke({
-                        color: [159, 159, 159, 0.8],
-                        width: 2
-                    })
+                    stroke
                 })
             })
         })
@@ -191,10 +199,7 @@ var selectableLayers = {
         layer: new ol.layer.Vector({
             source: sources.powerLines,
             style: new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: [159, 159, 159],
-                    width: 2
-                })
+                stroke
             })
         })
     },
@@ -266,10 +271,11 @@ var selectableLayers = {
                 fill: new ol.style.Fill({
                     color: '#fec44f'
                 }),
-                stroke: new ol.style.Stroke({
+                /*stroke: new ol.style.Stroke({
                     color: [64, 64, 64, 0.7],
                     width: 2
-                })
+                })*/
+                stroke
             })
         })
     }
