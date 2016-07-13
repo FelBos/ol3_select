@@ -9,19 +9,21 @@
     <script src="http://openlayers.org/en/v3.16.0/build/ol.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="lib/ext/ext-all.js"></script>
+    <meta charset="UTF-8">
 </head>
 
 <body>
     <div class="container">
         <h2>Aufgabe 6</h2>
-        <p>Bitte selektieren Sie mehrere Strommasten in der Karte. Bitte Selektieren Sie anschliessend mehrere Zeilen in der Tabelle. Sie koennen mehrere Zeilen durch Strg- bzw. Shifttaste auswaehlen.
-            <br>Bitte deselektieren Sie anschliessend eine beliebige Anzahl der Subselektionen (gelb markiert). Halten Sie dazu die Shift-Taste gedrueckt und klicken auf die gewuenschten Features.</p>
+        <p>Bitte selektieren Sie mehrere Strommasten in der Karte. Sortieren Sie bitte in der Tabelle eine der Spalten auf- bzw. absteigend. Bitte Selektieren Sie anschließend mehrere Zeilen in der Tabelle. Sie können mehrere Zeilen durch Strg- bzw. Shifttaste auswählen.
+            <br>Bitte deselektieren Sie anschließend in der Karte eine beliebige Anzahl der Subselektionen (beige markiert). Halten Sie dazu die Shift-Taste gedrückt und klicken auf die gewünschten Features.</p>
+        <p>Selektierbare Layer</p>
         <p>
             <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Strommasten</input>
             <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Hochspannungsleitung</input>
             <input id="solarPoly" type="checkbox" data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solarparks</input>
+            <button id="btDelete" type="button">Selektionen löschen</button>
         </p>
-        <button id="btDelete" type="button">Selektionen loeschen</button>
         <!--button id="btDeselect" type="button">deselect features</button-->
         <!--input id="deselectL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="deselectL" data-off="deselectL">Features deselektieren</input-->
         <!--button id="task4To5" type="button" onclick="location.href='index_task5.html'">Aufgabe 5</button-->

@@ -9,21 +9,23 @@
     <script src="http://openlayers.org/en/v3.16.0/build/ol.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="lib/ext/ext-all.js"></script>
+    <meta charset="UTF-8">
 </head>
 
 <body>
     <div class="container">
         <h2>Aufgabe 2</h2>
-        <p>Bitte selektieren Sie mehrere Strommasten durch eine Boxselektion. Halten Sie dazu die Strg-Taste gedrueckt. Bitte wechseln Sie anschliessend zu Aufgabe 3.</p>
+        <p>Bitte selektieren Sie mehrere Strommasten durch eine Boxselektion. Halten Sie dazu die Strg-Taste gedrückt. Bitte wechseln Sie anschließend zu         <button id="task2To3" type="button" onclick="location.href='index_task3.html'">Aufgabe 3</button>
+        </p>
+        <p><strong>Selektierbare Layer</strong></p>
         <p>
             <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Strommasten</input>
             <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Hochspannungsleitung</input>
             <input id="solarPoly" type="checkbox" data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solarparks</input>
+            <button id="btDelete" type="button">Selektionen löschen</button>
         </p>
-        <button id="btDelete" type="button">Selektionen loeschen</button>
         <!--button id="btDeselect" type="button">deselect features</button-->
         <!--input id="deselectL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="deselectL" data-off="deselectL">Features deselektieren</input-->
-        <button id="task2To3" type="button" onclick="location.href='index_task3.html'">Aufgabe 3</button>
         <div id="map" class="map"></div>
         <div id="grid"></div>
     </div>
