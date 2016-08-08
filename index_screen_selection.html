@@ -14,12 +14,15 @@
 <body>
     <div class="container">
         <h2>Select features</h2>
-        <p>Choose the layer you want to select
+        <p>Selectable layers</p>
+        <p>
             <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Power Tower</input>
             <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Power Lines</input>
             <input id="solarPoly" type="checkbox" data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solar Polygon</input>
+            <button id="btDelete" type="button">delete selection</button>
+            <button id="btMouseOver" type="button">mouse over selection</button>
+            <button id="btRmMouseOver" type="button">remove mouse over selection</button>
         </p>
-        <button id="btDelete" type="button">delete selection</button>
         <!--button id="btDeselect" type="button">deselect features</button-->
         <!--input id="deselectL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="deselectL" data-off="deselectL">deselect Features</input-->
         <div id="map" class="map"></div>
@@ -27,6 +30,8 @@
     </div>
     <script type="text/javascript" src="scripts/layers.js"></script>
     <script type="text/javascript" src="scripts/screen_selection.js"></script>
+    <!--script type="text/javascript" src="scripts/screen_selection_desel_subsel.js"-->
+    </script>
 </body>
 
 </html>
