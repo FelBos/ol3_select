@@ -37,7 +37,8 @@ var sources = {
 
 // style variables
 var stroke = new ol.style.Stroke({
-    color: [127, 127, 127, 0.8],
+    //color: [127, 127, 127, 0.8],
+    color: 'rgba(127, 127, 127, 0.8)',
     width: 2
 });
 
@@ -48,7 +49,7 @@ var selectableLayers = {
     powerTower: {
         title: 'Power Tower',
         selectable: false,
-        dataModel: ['osm_id', 'power', 'operator', 'ref', 'osm_pk', 'geom_wkt', /* 'geometry',*/ 'feature_Id'],
+        dataModel: ['osm_id', 'power', 'operator', 'ref', 'osm_pk', 'geom_wkt', /*'geometry',*/ 'feature_Id'],
         columns: [{
                 text: 'OSM ID',
                 width: 100,
@@ -86,20 +87,20 @@ var selectableLayers = {
                 hideable: true,
                 dataIndex: 'geom_wkt'
             },
-            /* {
-                        text: 'Geometry',
-                        width: 100,
-                        sortable: true,
-                        hideable: true,
-                        dataIndex: 'geometry'
-                    },*/
+            /*{
+                       text: 'Geometry',
+                       width: 100,
+                       sortable: true,
+                       hideable: true,
+                       dataIndex: 'geometry'
+                   },*/
             {
                 text: 'Feature Id',
                 width: 100,
                 sortable: true,
                 hideable: true,
-                dataIndex: 'feature_Id',
-                //tdCls: 'x-cell'
+                dataIndex: 'feature_Id'
+                    //tdCls: 'x-cell'
             }
         ],
         layer: new ol.layer.Vector({
@@ -108,9 +109,10 @@ var selectableLayers = {
                 image: new ol.style.Circle({
                     radius: 10,
                     fill: new ol.style.Fill({
-                        color: [255, 0, 0, 0.2]
+                        //color: [255, 0, 0, 0.2]
+                        color: 'rgba(255, 0, 0, 0.2)'
                     }),
-                    stroke
+                    stroke: stroke
                 })
             })
         })
@@ -198,7 +200,7 @@ var selectableLayers = {
         layer: new ol.layer.Vector({
             source: sources.powerLines,
             style: new ol.style.Style({
-                stroke
+                stroke: stroke
             })
         })
     },
@@ -268,9 +270,11 @@ var selectableLayers = {
             source: sources.solarPolygon,
             style: new ol.style.Style({
                 fill: new ol.style.Fill({
-                    color: '#fec44f'
+                    //color: '#fec44f'
+                    //color: 'rgba(254, 196, 79, 1)'
+                    color: 'rgb(254, 196, 79)'
                 }),
-                stroke
+                stroke: stroke
             })
         })
     }

@@ -1,9 +1,9 @@
-#daten {
+/*#daten {
     height: 100px;
     width: 99%;
     margin: 0px;
     background-color: #fefefe;
-}
+}*/
 
 
 /*.x-cell {
@@ -17,13 +17,17 @@
     /*height: 40%;*/
     min-height: 200px;
     max-height: 800px;
-    width: 99%;
+    /*width: 100%;*/
+    /*margin-left: 1%;
+    margin-right: 1%;*/
 }
 
 #grid {
     min-height: 100px;
     max-height: 400px;
-    width: 99%;
+    /*width: 100%;*/
+    /*margin-left: 1%;
+    margin-right: 1%;*/
 }
 
 p {
@@ -36,4 +40,47 @@ button {
 
 h2 {
     margin: 7px 5px;
+}
+
+h3 {
+    /*margin: 6px 4px;*/
+    margin: 5px;
+}
+
+#containerMLT {
+    width: 99%;
+}
+
+#containerMapTable {
+    width: 88%;
+    float: left;
+}
+
+#containerLegend {
+    width: 11%;
+    float: right;
+    position: relative;
+    left: 5px;
+    /*margin-top: 5px;*/
+    /*margin-bottom: 10px;*/
+    /*margin-left: 5px;*/
+    /*margin-right: 10px;*/
+}
+
+
+/*#headerLegend {
+    position: absolute;
+    top: 0;
+}*/
+
+
+/*.topLegendContainer {
+    position: fixed;
+    top: 0;
+}
+*/
+
+.legendContainer {
+    position: relative;
+    margin-top: 1em;
 }
