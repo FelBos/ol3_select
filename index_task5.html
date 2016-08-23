@@ -13,24 +13,68 @@
 </head>
 
 <body>
-    <div class="container">
+    <div>
         <h2>Aufgabe 5</h2>
-        <p>Bitte selektieren Sie eine beliebige Anzahl von Strommasten. Anschließend deselektieren Sie bitte eine beliebige Anzahl an Features. Halten Sie dazu die Shift-Taste gedrückt und klicken auf selektierte Features. Bitte wechseln Sie anschließend zu         <button id="task5To6" type="button" onclick="location.href='index_task6.html'">Aufgabe 6</button>
+        <p>Bitte selektieren Sie eine beliebige Anzahl von Strommasten. Anschließend deselektieren Sie bitte eine beliebige Anzahl an Features. Halten Sie dazu die Shift-Taste gedrückt und klicken auf selektierte Features. Bitte wechseln Sie anschließend zu
+            <button id="task5To6" type="button" onclick="location.href='index_task6.html'">Aufgabe 6</button>
         </p>
-        <p>Selektierbare Layer</p>
-        <p>
+        <h3>Selektierbare Layer</h3>
+        <div id="containerCheckobxes" class="container">
             <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Strommasten</input>
             <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Hochspannungsleitungen</input>
             <input id="solarPoly" type="checkbox" data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solarparks</input>
+        </div>
+        <div id="containerButton" class="container">
             <button id="btDelete" type="button">Selektionen löschen</button>
-        </p>
-        <!--button id="btDeselect" type="button">deselect features</button-->
-        <!--input id="deselectL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="deselectL" data-off="deselectL">Features deselektieren</input-->
-        <div id="map" class="map"></div>
-        <div id="grid"></div>
+            <!--button id="btMouseOver" type="button">mouse over selection</button>
+            <button id="btRmMouseOver" type="button">remove mouse over selection</button-->
+        </div>
+        <div id="containerMLT" class="container">
+            <div id="containerMapTable" class="container">
+                <div id="map" class="map"></div>
+                <div id="grid"></div>
+            </div>
+            <div id="containerLegend" class="container">
+                <h2 id="headerLegend">Legende</h2>
+                <!--div id="lPT" class="topLegendContainer"-->
+                <div id="lPT" class="legendContainer">
+                    <p>Strommasten</p>
+                    <div id="legendPowerTower">
+                    </div>
+                </div>
+                <div id="lPL" class="legendContainer">
+                    <p>Hochspannungsleitungen</p>
+                    <div id="legendPowerLines">
+                    </div>
+                </div>
+                <div id="lSP" class="legendContainer">
+                    <p>Solarparks</p>
+                    <div id="legendSolarPolygon">
+                    </div>
+                </div>
+                <div id="lSel" class="legendContainer">
+                    <p>Selektion</p>
+                    <div id="legendSelection">
+                    </div>
+                </div>
+                <!-- <div id="lSubSel" class="legendContainer">
+                    <p>Subselektion</p>
+                    <div id="legendSubSelection">
+                    </div>
+                </div> -->
+                <!-- <div id="lMoOvSubSel" class="legendContainer"> -->
+                <!--p><span class="rwd-line"> Mouseover</span><span class="rwd-line"> subselection</span></p-->
+                <!-- <p>Mouseoversubselektion</p>
+                    <div id="legendMouseOverSubSelection">
+                    </div>
+                </div> -->
+            </div>
+        </div>
     </div>
     <script type="text/javascript" src="scripts/layers.js"></script>
-    <script type="text/javascript" src="scripts/screen_selection.js"></script>
+    <script type="text/javascript" src="scripts/selection_survey_until_160719-20.js"></script>
+    <script type="text/javascript" src="scripts/legend.js"></script>
+    <!--script type="text/javascript" src="scripts/table.js"></script-->
 </body>
 
 </html>

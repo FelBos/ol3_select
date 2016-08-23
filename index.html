@@ -2,34 +2,72 @@
 <html>
 
 <head>
-    <title>OL3 select</title>
+    <title>Bidirektionale Selektionen</title>
     <link rel="stylesheet" href="http://openlayers.org/en/v3.16.0/css/ol.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="lib/ext/ext.css" />
     <link rel="stylesheet" type="text/css" href="css/base.css" />
     <script src="http://openlayers.org/en/v3.16.0/build/ol.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="lib/ext/ext-all.js"></script>
+    <meta charset="UTF-8">
 </head>
 
 <body>
-    <div class="container">
-        <h2>Selecting features</h2>
-        <p>Check the layers you want to select</p>
-        <p>
-            Selectable layers:
-            <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Power Tower</input>
-            <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Power Lines</input>
-            <input id="solarPoly" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solar polygon</input>
-            <button onclick="selectValues()">Select layer</button>
-            <button onclick="deleteSelectVal()">delete selection values</button>
-            <!--button onclick="unselectFeatures()">unselect Features</button-->
-            <button onclick="removeSelectedFeature()">unselect Features</button>
-        </p>
-        <div id="map" class="map"></div>
-        <!--textarea id="daten"> Daten...</textarea-->
-        <div id="grid"></div>
+    <h3>Selektierbare Layer</h3>
+    <div id="containerCheckobxes" class="container">
+        <input id="powerT" type="checkbox" checked data-size="mini" data-toggle="toggle" data-on="powerT" data-off="powerT">Strommasten</input>
+        <input id="powerL" type="checkbox" data-size="mini" data-toogle="toogle" data-on="powerL" data-off="powerL">Hochspannungsleitungen</input>
+        <input id="solarPoly" type="checkbox" data-size="mini" data-toggle="toggle" data-on="solarPoly" data-off="solarPoly">Solarparks</input>
     </div>
-    <script type="text/javascript" src="scripts/map.js"></script>
+    <div id="containerButton" class="container">
+        <button id="btDelete" type="button">Selektionen löschen</button>
+        <button id="btMouseOver" type="button">mouse over selection</button>
+        <button id="btRmMouseOver" type="button">remove mouse over selection</button>
+    </div>
+    <div id="containerMLT" class="container">
+        <div id="containerMapTable" class="container">
+            <div id="map" class="map"></div>
+            <div id="grid"></div>
+        </div>
+        <div id="containerLegend" class="container">
+            <h2 id="headerLegend">Legende</h2>
+            <!--div id="lPT" class="topLegendContainer"-->
+            <div id="lPT" class="legendContainer">
+                <p>Strommasten</p>
+                <div id="legendPowerTower">
+                </div>
+            </div>
+            <div id="lPL" class="legendContainer">
+                <p>Hochspannungsleitungen</p>
+                <div id="legendPowerLines">
+                </div>
+            </div>
+            <div id="lSP" class="legendContainer">
+                <p>Solarparks</p>
+                <div id="legendSolarPolygon">
+                </div>
+            </div>
+            <div id="lSel" class="legendContainer">
+                <p>Selektionen</p>
+                <div id="legendSelection">
+                </div>
+            </div>
+            <div id="lSubSel" class="legendContainer">
+                <p>Subselektion</p>
+                <div id="legendSubSelection">
+                </div>
+            </div>
+            <div id="lMoOvSubSel" class="legendContainer">
+                <!--p><span class="rwd-line"> Mouseover</span><span class="rwd-line"> subselection</span></p-->
+                <p>Mouseoversubselektion</p>
+                <div id="legendMouseOverSubSelection">
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="scripts/layers.js"></script>
+        <script type="text/javascript" src="scripts/screen_selection.js"></script>
+        <script type="text/javascript" src="scripts/legend.js"></script>
+        <script type="text/javascript" src="scripts/table.js"></script>
 </body>
 
 </html>

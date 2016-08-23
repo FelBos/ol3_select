@@ -398,26 +398,6 @@ var map = new ol.Map({
         scaleBar
     ])
 });
-
-/*var view = new ol.View({
-    center: [1010401.9676446737, 7188119.030680903],
-    maxZoom: 19,
-    zoom: 13
-});
-
-var map = new ol.Map({
-    target: 'map'
-});
-
-map.addLayer(mapQuest);
-map.addLayer(solarPolygon);
-map.addLayer(powerLines);
-map.addLayer(powerTower);
-map.setView(view);
-
-map.getInteractions().extend([selectInteraction, dragBox]);
-map.addControl(['zoom', scaleBar]);*/
-
 /*
  * map controls and base layer end
  */
@@ -506,22 +486,22 @@ var clearSelection = function() {
     selectInteraction.getFeatures().clear();
     subSelection.getFeatures().clear();
     subSelectionMouseOver.getFeatures().clear();
-    /*mouseOverInteraction.getFeatures().clear();
-    map.removeInteraction(mouseOverInteraction);*/
+    mouseOverInteraction.getFeatures().clear();
+    map.removeInteraction(mouseOverInteraction);
     map.removeInteraction(subSelectionMouseOver);
     map.removeInteraction(subSelection);
-    //map.removeInteraction(selectInteraction);
-    //map.addInteraction(selectInteraction);
+    /*map.removeInteraction(selectInteraction);
+    map.addInteraction(selectInteraction);*/
 };
 
 
 
 // when feature is selected
-selectInteraction.on('select', function() {
+/*selectInteraction.on('select', function() {
     map.removeInteraction(subSelectionMouseOver);
     map.removeInteraction(subSelection);
     putFeaturesToStore();
-});
+});*/
 
 // select on subselection
 subSelection.on('select', function() {
@@ -531,8 +511,8 @@ subSelection.on('select', function() {
     map.removeInteraction(subSelection);
     map.addInteraction(subSelection);
     subSelectionMouseOver.getFeatures().clear();
-    //map.removeInteraction(subSelectionMouseOver);
-    //map.addInteraction(subSelectionMouseOver);
+    map.removeInteraction(subSelectionMouseOver);
+    map.addInteraction(subSelectionMouseOver);
     //higlightInTable();
 });
 
@@ -620,15 +600,16 @@ var styleMouseOver = new ol.style.Style({
         stroke: strokeMouseOver,
         radius: radiusMouseOver
     })
-});
+});*/
 
 
 var mouseOverInteraction = new ol.interaction.Select({
     layers: function(layer) {
         return getActiveLayerSource().layer;
     },
-    style: styleMouseOver
-});*/
+    //style: styleMouseOver
+    style: styleSelectInteraction
+});
 
 
 
@@ -646,15 +627,16 @@ if (getMouseOver() === true) {
     console.log('if getMouseOver is true');
 }*/
 
-var stateMouseOver = function(event) {
+/*var stateMouseOver = function(event) {
     event.stopPropagation();
     activateMouseOver();
-};
+};*/
 
 //$('#btMouseOver').on('click', stateMouseOver);
 //$('#btMouseOver').off('click', deactivateMouseOver);
 //$('#btMouseOver').on('click', stateMouseOver);
 //$('#btMouseOver').on('click', stateMouseOver);
+
 
 var activateMouseOver = function() {
     //$('#btMouseOver').click(function() {
@@ -678,12 +660,12 @@ var activateMouseOver = function() {
         });
 
         if (hit === true) {
-            console.log('a feature was hit');
+            //console.log('a feature was hit');
             var pointer_coord = map.getEventCoordinate(e.originalEvent);
-            console.log('pointer_coord is ', pointer_coord);
+            //console.log('pointer_coord is ', pointer_coord);
             var closest = getActiveLayerSource().source.getClosestFeatureToCoordinate(pointer_coord);
-            console.log('closest feature is ', closest);
-            console.log('closest feature id is ', closest.getId());
+            /*console.log('closest feature is ', closest);
+            console.log('closest feature id is ', closest.getId());*/
             selectInteraction.getFeatures().clear();
             map.removeInteraction(selectInteraction);
             map.addInteraction(selectInteraction);
@@ -697,15 +679,16 @@ var activateMouseOver = function() {
     //});
     //deactivateMouseOver();
 };
+activateMouseOver();
 
-var deactivateMouseOver = function(event) {
+/*var deactivateMouseOver = function(event) {
     event.stopPropagation();
     map.unByKey('pointermove');
 };
 
 $('#btRmMouseOver').on('click', deactivateMouseOver);
 
-var key = $('#btMouseOver').on('click', stateMouseOver);
+var key = $('#btMouseOver').on('click', stateMouseOver);*/
 //var key = $('#btMouseOver').on('click', activateMouseOver);
 //ol.Observable.unByKey(key);
 

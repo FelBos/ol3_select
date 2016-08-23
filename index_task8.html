@@ -14,9 +14,9 @@
 
 <body>
     <div>
-        <h2>Aufgabe 4</h2>
-        <p>Bitte selektieren Sie mehrere Strommasten durch ein Reinzoomen. Bitte wechseln Sie anschließend zu
-            <button id="task4To5" type="button" onclick="location.href='index_task5.html'">Aufgabe 5</button>
+        <h2>Aufgabe 8</h2>
+        <p>Bitte selektieren Sie mehrere Strommasten in der Karte. Bitte bewegen Sie anschließend den Mauszeiger über die Tabelle. Selektieren Sie danach mehrere Zeilen. Bitte wechseln Sie anschließend zu
+            <button id="task8To9" type="button" onclick="location.href='index_task9.html'">Aufgabe 9</button>
         </p>
         <h3>Selektierbare Layer</h3>
         <div id="containerCheckobxes" class="container">
@@ -26,8 +26,8 @@
         </div>
         <div id="containerButton" class="container">
             <button id="btDelete" type="button">Selektionen löschen</button>
-            <!--button id="btMouseOver" type="button">mouse over selection</button>
-            <button id="btRmMouseOver" type="button">remove mouse over selection</button-->
+            <!-- <button id="btMouseOver" type="button">mouse over selection</button>
+            <button id="btRmMouseOver" type="button">remove mouse over selection</button> -->
         </div>
         <div id="containerMLT" class="container">
             <div id="containerMapTable" class="container">
@@ -57,24 +57,26 @@
                     <div id="legendSelection">
                     </div>
                 </div>
-                <!--div id="lSubSel" class="legendContainer">
+                <div id="lSubSel" class="legendContainer">
                     <p>Subselektion</p>
                     <div id="legendSubSelection">
                     </div>
-                </div-->
-                <!--div id="lMoOvSubSel" class="legendContainer"-->
-                <!--p><span class="rwd-line"> Mouseover</span><span class="rwd-line"> subselection</span></p-->
-                <!--p>Mouseoversubselektion</p>
+                </div>
+                <div id="lMoOvSubSel" class="legendContainer">
+                    <!--p><span class="rwd-line"> Mouseover</span><span class="rwd-line"> subselection</span></p-->
+                    <p>Mouseoversubselektion</p>
                     <div id="legendMouseOverSubSelection">
                     </div>
-                </div-->
+                </div>
             </div>
         </div>
     </div>
     <script type="text/javascript" src="scripts/layers.js"></script>
-    <script type="text/javascript" src="scripts/selection_survey_until_160719-20.js"></script>
+    <script type="text/javascript" src="scripts/screen_selection.js">
+    </script>
+    <!--script type="text/javascript" src="scripts/selection_survey_task_7.js"></script-->
+    <script type="text/javascript" src="scripts/table.js"></script>
     <script type="text/javascript" src="scripts/legend.js"></script>
-    <!--script type="text/javascript" src="scripts/table.js"></script-->
 </body>
 
 </html>
