@@ -13,18 +13,20 @@
 */
 
 #map {
-    height: 400px;
+    /*height: 400px;*/
     /*height: 40%;*/
-    min-height: 200px;
-    max-height: 800px;
+    /*min-height: 200px;
+    max-height: 800px;*/
+    height: 60vh;
     /*width: 100%;*/
     /*margin-left: 1%;
     margin-right: 1%;*/
 }
 
 #grid {
-    min-height: 100px;
-    max-height: 400px;
+    height: 30vh;
+    /*min-height: 100px;
+    max-height: 400px;*/
     /*width: 100%;*/
     /*margin-left: 1%;
     margin-right: 1%;*/
