@@ -372,6 +372,7 @@ var osmGray = new ol.layer.Image({
 
 //contextualWMSLegend=0&crs=EPSG:4326&dpiMode=all&featureCount=10&format=image/png&layers=osmwms_graustufen&styles=&url=http://osmwms.itc-halle.de/maps/osmsw?
 
+// set max zoom level for power tower
 powerTower.setMinResolution(0);
 powerTower.setMaxResolution(50);
 // create map

@@ -271,8 +271,8 @@ var selectableLayers = {
             style: new ol.style.Style({
                 fill: new ol.style.Fill({
                     //color: '#fec44f'
-                    //color: 'rgba(254, 196, 79, 1)'
-                    color: 'rgb(254, 196, 79)'
+                    color: 'rgba(254, 196, 79, 0.8)'
+                        //color: 'rgb(254, 196, 79)'
                 }),
                 stroke: stroke
             })
