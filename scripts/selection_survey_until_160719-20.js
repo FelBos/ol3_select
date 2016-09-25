@@ -403,7 +403,14 @@ var map = new ol.Map({
         maxZoom: 19,
         zoom: 13
     }),
-    control: ['zoom', scaleBar]
+    //control: ['zoom', scaleBar]
+    controls: ol.control.defaults({
+        attributionOptions: ({
+            collapsible: false
+        })
+    }).extend([
+        scaleBar
+    ])
 });
 
 /*var view = new ol.View({
