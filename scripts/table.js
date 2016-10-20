@@ -58,27 +58,21 @@ var selectionGrid = Ext.create('Ext.grid.Panel', {
     height: 280,
     title: 'Selections',
     selModel: {
-        selType: 'rowmodel', // rowmodel is the default selection model
+        selType: 'rowmodel', // set selection model
         mode: 'MULTI' // Allows selection of multiple rows
     },
     columns: getLayerGridColumn(),
     // add event listeners to panel
     listeners: {
-        select: function() { //record, index
-            /*var selectionModel = this.getSelectionModel();
-            var selection = this.getSelection();*/
-            //console.log('record is ', record);
-            //console.log('index is ', index);
+        // if row selected put it to subselection on map
+        select: function() {
             subSelectionToMap();
         },
-        /*containermouseover: function(e) {
-            console.log('containermouseover was triggered');
-            subSelectionToMap();
-        },*/
-        selectionchange: function() { //selected
-            //console.log('selected is ', selected);
+        // if selection in table is changed update subselection in map
+        selectionchange: function() {
             subSelectionToMap();
         },
+        // if row is left remove subselctions
         itemmouseleave: function() {
             map.removeInteraction(subSelectionMouseOver);
             map.removeInteraction(selectInteraction);
@@ -86,6 +80,7 @@ var selectionGrid = Ext.create('Ext.grid.Panel', {
             map.removeInteraction(subSelection);
             map.addInteraction(subSelection);
         },
+        // if mouse enters row call function subSelectionMouseOverToMap
         itemmouseenter: function(record, item) {
             subSelectionMouseOverToMap(item);
         }

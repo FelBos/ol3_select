@@ -49,8 +49,10 @@ var styleSelectInteraction = new ol.style.Style({
     stroke: strokeSelectInteraction
 });
 
+// selectInteraction handles layer for active layer
 var selectInteraction = new ol.interaction.Select({
     layers: function(layer) {
+        // checkbox to get active layer
         var powerT = $('#powerT').is(':checked');
         var powerL = $('#powerL').is(':checked');
         var solarPoly = $('#solarPoly').is(':checked');
@@ -64,7 +66,7 @@ var selectInteraction = new ol.interaction.Select({
 });
 
 
-
+// get source of active layer
 var getActiveLayerSource = function() {
     var layer;
     var source;
@@ -90,34 +92,6 @@ var getActiveLayerSource = function() {
 
 
 
-// style for subselecion
-// modification for style subSelection testing
-/*var radius = 8;
-var width = 2;
-var fill = new ol.style.Fill({
-    //color: [255, 239, 187, 1]
-    color: 'rgba(255, 239, 187, 1)'
-});
-
-var stroke = new ol.style.Stroke({
-    //color: [127, 127, 127, 0.8],
-    color: 'rgba(127, 127, 127, 0.8)',
-    width: width
-});
-var strokeLine = new ol.style.Stroke({
-    //color: [255, 239, 187, 1],
-    color: 'rgba(255, 239, 187, 1)',
-    width: width
-});
-var styleSubSelection = new ol.style.Style({
-    image: new ol.style.Circle({
-        fill: fill,
-        stroke: stroke,
-        radius: radius
-    }),
-    fill: fill,
-    stroke: strokeLine
-});*/
 
 // style for subselecion
 var radius = 8;
@@ -138,6 +112,7 @@ var strokeLine = new ol.style.Stroke({
     color: 'rgba(255, 239, 187, 1)'
 });
 
+// style for point subselection
 var stylePointSubselection = new ol.style.Style({
     image: new ol.style.Circle({
         fill: fill,
@@ -146,17 +121,19 @@ var stylePointSubselection = new ol.style.Style({
     })
 });
 
+// style for line subselection
 var styleLineSubselection = new ol.style.Style({
     stroke: strokeLine,
     width: width
 });
 
+// style for polygon subselection
 var stylePolygonSubselection = new ol.style.Style({
     fill: fill,
     stroke: stroke
 });
 
-
+// set subselsection style for respective layer
 if (getActiveLayerSource().layer === powerTower) {
     styleSubSelection = stylePointSubselection;
 } else if (getActiveLayerSource().layer === powerLines) {
@@ -168,12 +145,6 @@ if (getActiveLayerSource().layer === powerTower) {
 
 var subSelection = new ol.interaction.Select({
     layers: function(layer) {
-        /*var powerT = $('#powerT').is(':checked');
-        var powerL = $('#powerL').is(':checked');
-        var solarPoly = $('#solarPoly').is(':checked');
-        return (powerT && layer === powerTower) ||
-            (powerL && layer === powerLines) ||
-            (solarPoly && layer === solarPolygon);*/
         return getActiveLayerSource().layer;
     },
     style: styleSubSelection,
@@ -196,14 +167,9 @@ var stylePointSubSelectionMouseOver = new ol.style.Style({
     })
 });
 
+// subselection
 var subSelectionMouseOver = new ol.interaction.Select({
     layers: function(layer) {
-        /*var powerT = $('#powerT').is(':checked');
-        var powerL = $('#powerL').is(':checked');
-        var solarPoly = $('#solarPoly').is(':checked');
-        return (powerT && layer === powerTower) ||
-            (powerL && layer === powerLines) ||
-            (solarPoly && layer === solarPolygon);*/
         return getActiveLayerSource().layer;
     },
     style: stylePointSubSelectionMouseOver,
@@ -247,11 +213,6 @@ function subSelectionMouseOverToMap(item) {
     subSelectionMouseOver.getFeatures().clear();
 
     // no loop through array neccessary because only one element is pushed to map
-    // loop is not neccessary
-    /*for (var i = 0; i < arrayToMap.length; i++) {
-        subSelectionMouseOver.getFeatures().push(arrayToMap[0]);
-    }*/
-    // is sufficient because only one element is pushed to map
     subSelectionMouseOver.getFeatures().push(arrayToMap[0]);
 
     map.removeInteraction(selectInteraction);
@@ -287,10 +248,7 @@ dragBox.on('boxend', function() {
 /* map controls and base layer start
  *
  */
-var scaleBar = new ol.control.ScaleLine();
-//var scaleLine = new ol.control.ScaleLineUnits({ 'metric' });
-
-// get raster layer
+// get background maps
 // open cycle map
 var rasterOcm = new ol.layer.Tile({
     source: new ol.source.OSM({
@@ -308,61 +266,12 @@ var mapQuest = new ol.layer.Tile({
     source: new ol.source.MapQuest({ layer: 'osm' })
 });
 
+// osm 
 var osm = new ol.layer.Tile({
     source: new ol.source.OSM()
 });
 
-/*var osmGray = ol.layer.Tile({
-    source: new ol.source.TileWMS(({
-        url: 'http://ows.terrestris.de/osm-gray/service'
-    }))
-});*/
-
-//'http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=text%2Fhtml%3B+subtype%3Dopenlayers'
-
-//var geoServerWorldWms = new ol.layer.Tile({
-//extent: [-180.0, -90.0, 180.0, 90.0],
-//source: new ol.source.ImageWMS({
-/*source: new ol.source.TileWMS({
-    url: 'http://localhost/geoserver/aws/',
-    params: { 'LAYERS': 'nurc:Arc_Sample', 'TILED': true },
-    serverType: 'geoserver'
-})*/
-/*url: function(extent) {
-    format: new ol.format.
-    //return 'http://http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=text%2Fhtml%3B+subtype%3Dopenlayers'
-    return 'http://http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&bbox' + extent.join(',') + 'EPSG:4326';
-    strategy: ol.loadingstrategy.bbox
-}*/
-/*    source: new ol.source.ImageWMS({
-        url: 'http://http://localhost/geoserver/aws/nurc/wms?service=WMS&version=1.1.0&request=GetMap&layers=nurc:Arc_Sample&styles=&bbox=-180.0,-90.0,180.0,90.0&width=768&height=384&srs=EPSG:4326&format=text%2Fhtml%3B+subtype%3Dopenlayers'
-    })
-});*/
-
-
-/*format: new ol.format.GeoJSON(),
-url: function(extent) {
-    return 'http://localhost/geoserver/aws/BGI/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=BGI:solarpolygon&outputFormat=application%2Fjson&srsname=EPSG:3857&bbox=' + extent.join(',') + ',EPSG:3857';
-},
-strategy: ol.loadingstrategy.bbox*/
-
-/*var geoServerWorldWms = new ol.layer.Tile({
-    title: 'A sample ArcGrid file',
-    source: new ol.source.TileWMS({
-        url: 'http://localhost/geoserver/aws/nurc/wms',
-        params: { LAYERS: 'nurc:Arc_Sample', VERSION: '1.0.0' }
-        //tiled: 'TRUE'
-    })
-});*/
-
-/*var geoServerWorldWms = new ol.layer.Image({
-    title: 'A sample ArcGrid file',
-    source: new ol.source.ImageWMS({
-        url: 'http://localhost/geoserver/aws/nurc/wms',
-        params: { LAYERS: 'nurc:Arc_Sample', VERSION: '1.0.0' }
-    })
-});*/
-
+// osm gray
 var osmGray = new ol.layer.Image({
     source: new ol.source.ImageWMS({
         params: { LAYERS: 'osmwms_graustufen' },
@@ -370,26 +279,29 @@ var osmGray = new ol.layer.Image({
     })
 });
 
-//contextualWMSLegend=0&crs=EPSG:4326&dpiMode=all&featureCount=10&format=image/png&layers=osmwms_graustufen&styles=&url=http://osmwms.itc-halle.de/maps/osmsw?
 
+// set max zoom level for power tower
 powerTower.setMinResolution(0);
 powerTower.setMaxResolution(50);
+
+// create a scale bar
+var scaleBar = new ol.control.ScaleLine();
+
 // create map
 var map = new ol.Map({
     target: document.getElementById('map'),
     //target: 'map',
     renderer: 'canvas',
     interactions: ol.interaction.defaults().extend([
-        /*clonedSelection,*/
-        selectInteraction, dragBox /*, subSelection*/ /*, singleClickSelection*/
+        selectInteraction, dragBox 
     ]),
+    // base layer and overlay layer
     layers: [ /*mapQuest,*/ osm, /* geoServerWorldWms,*/ /*osmGray,*/ solarPolygon, powerLines, powerTower],
     view: new ol.View({
         center: [1010401.9676446737, 7188119.030680903],
         maxZoom: 19,
         zoom: 13
     }),
-    //controls: ['zoom', scaleBar, scaleBar]
     controls: ol.control.defaults({
         attributionOptions: ({
             collapsible: false
@@ -399,31 +311,12 @@ var map = new ol.Map({
     ])
 });
 
-/*var view = new ol.View({
-    center: [1010401.9676446737, 7188119.030680903],
-    maxZoom: 19,
-    zoom: 13
-});
-
-var map = new ol.Map({
-    target: 'map'
-});
-
-map.addLayer(mapQuest);
-map.addLayer(solarPolygon);
-map.addLayer(powerLines);
-map.addLayer(powerTower);
-map.setView(view);
-
-map.getInteractions().extend([selectInteraction, dragBox]);
-map.addControl(['zoom', scaleBar]);*/
-
 /*
  * map controls and base layer end
  */
 
 
-
+// get current map extent
 function getMapExtent() {
     var mapExtent = map.getView().calculateExtent(map.getSize());
     return mapExtent;
@@ -436,7 +329,6 @@ var putFeaturesToStore = function() {
     selectInteraction.getFeatures().forEach(function(feature) {
         // get properties of selected feature
         var prop = feature.getProperties();
-        console.log('property is ', prop);
 
         // power tower
         if (getActiveLayerSource().layer === powerTower) {
@@ -493,7 +385,7 @@ var putFeaturesToStore = function() {
 };
 
 
-
+// call function clear selectio when button is clicked
 $('#btDelete').click(function() {
     clearSelection();
 });
@@ -506,12 +398,8 @@ var clearSelection = function() {
     selectInteraction.getFeatures().clear();
     subSelection.getFeatures().clear();
     subSelectionMouseOver.getFeatures().clear();
-    /*mouseOverInteraction.getFeatures().clear();
-    map.removeInteraction(mouseOverInteraction);*/
     map.removeInteraction(subSelectionMouseOver);
     map.removeInteraction(subSelection);
-    //map.removeInteraction(selectInteraction);
-    //map.addInteraction(selectInteraction);
 };
 
 
@@ -531,69 +419,17 @@ subSelection.on('select', function() {
     map.removeInteraction(subSelection);
     map.addInteraction(subSelection);
     subSelectionMouseOver.getFeatures().clear();
-    //map.removeInteraction(subSelectionMouseOver);
-    //map.addInteraction(subSelectionMouseOver);
-    //higlightInTable();
 });
 
-//function higlightInTable() {
-//console.log(subSelection.getFeatures());
-//$.each(subSelection.getFeatures(), function() {
-//console.log('feature id is ', subSelection.getFeatures().getId());
-//$.each(subSelection.getFeatures(), function(key, value) {
-
-/*console.log('key is ', key);
-console.log('feature is ', feature);
-var featureKey = subSelection.getFeatures().getKeys();
-console.log('feature key is ', featureKey);
-var featureValue = subSelection.getFeatures().get(featureKey);
-console.log('featureValue is ', featureValue);
-console.log('subSelection length is', subSelection.getFeatures().getLength());
-console.log('subSelection array is ', subSelection.getFeatures().getArray());
-var subSelectionArray = subSelection.getFeatures().getArray();
-console.log('first entry is ', subSelectionArray[0]);
-console.log('first entry id is ', subSelectionArray[0].getId());*/
-/*for (var i = 0; i < subSelection.getFeatures().getLength(); i++) {
-    var subSelectionArray = subSelection.getFeatures().getArray();
-    var subSelFeatureId = subSelectionArray[i].getId();
-    console.log('subSelection featureId is ', subSelFeatureId);
-    for (var j = 0; j < selectionGrid.getStore().data.items.length; j++) {
-        //console.log('feature id of feature in store is ', selectionGrid.getStore().data.items[j].data.feature_Id);
-        var gridFeatureId = selectionGrid.getStore().data.items[j].data.feature_Id;
-        console.log('gridFeatureId is ', gridFeatureId);
-        console.log('style proxy is ', selectionGrid.getStyleProxy());
-        //console.log('selection records are ', Ext.grid.selection.getRecords());
-        if (subSelFeatureId === gridFeatureId) {
-            console.log('subSelFeatureId and gridFeatureId are the same');
-
-        }
-    }
-}*/
-/*console.log('panel id is ', selectionGrid.getId());
-console.log('panel item id is ', selectionGrid.getItemId());
-console.log('panel store is ', selectionGrid.getStore());
-console.log('panel store data is ', selectionGrid.getStore().data);
-console.log('panel store data item 0 is ', selectionGrid.getStore().data.items[0]);
-console.log('panel store data item 0 data is ', selectionGrid.getStore().data.items[0].data);
-console.log('panel store data item 0 data featureid is ', selectionGrid.getStore().data.items[0].data.feature_Id);
-console.log('panel store data length is ', selectionGrid.getStore().data.items.length);*/
-/*for (var j = 0; j < selectionGrid.getStore().data.items.length; j++) {
-    console.log('feature id of feature in store is ', selectionGrid.getStore().data.items[j].data.feature_Id);
-}*/
-//console.log('panel selection is ', selectionGrid.getSelection());
-/*var feature = subSelection.getFeatures();
-console.log('feature is ', feature);
-console.log('feature data is ', subSelection.getFeatures().data);*/
-/*var fId = feature.getId();
-console.log('fId is ', fId);*/
-//})
-//}
 
 
-
-// when map is moved
+// select on the bais of current screen extent
 map.on('moveend', function() {
+    // delete former selections
     clearSelection();
+    // get active layer
+    // get all features intersecting
+    // current map extent 
     getActiveLayerSource().source.forEachFeatureIntersectingExtent(getMapExtent(), function(feature) {
         selectInteraction.getFeatures().push(feature);
     });
@@ -601,150 +437,36 @@ map.on('moveend', function() {
 });
 
 
-
-/*var widthMouseOver = 2;
-var radiusMouseOver = 6;
-var fillMouseOver = new ol.style.Fill({
-    color: [255, 255, 255, 0.8]
-});
-
-var strokeMouseOver = new ol.style.Stroke({
-    color: [0, 0, 0, 1],
-    width: widthMouseOver
-});
-
-
-var styleMouseOver = new ol.style.Style({
-    image: new ol.style.Circle({
-        fill: fillMouseOver,
-        stroke: strokeMouseOver,
-        radius: radiusMouseOver
-    })
-});
-
-
-var mouseOverInteraction = new ol.interaction.Select({
-    layers: function(layer) {
-        return getActiveLayerSource().layer;
-    },
-    style: styleMouseOver
-});*/
-
-
-
-/*var getMouseOver = function(setter) {
-    var mouseOver = false;
-    if (setter === false) {
-        mouseOver = false;
-    } else {
-        mouseOver = false
-    }
-    return mouseOver;
-};
-
-if (getMouseOver() === true) {
-    console.log('if getMouseOver is true');
-}*/
-
-var stateMouseOver = function(event) {
-    event.stopPropagation();
-    activateMouseOver();
-};
-
-//$('#btMouseOver').on('click', stateMouseOver);
-//$('#btMouseOver').off('click', deactivateMouseOver);
-//$('#btMouseOver').on('click', stateMouseOver);
-//$('#btMouseOver').on('click', stateMouseOver);
-
+// actviate selection via mouseover
 var activateMouseOver = function() {
-    //$('#btMouseOver').click(function() {
-    //if (getMouseOver() === true) {
     map.on('pointermove', function(e) {
-        //getMouseOver();
-        //if (getMouseOver() === true) {
-        //console.log('pointermove was triggered');
         var pixel = map.getEventPixel(e.originalEvent);
-        console.log('pixel cooridnate is ', pixel);
         var hit = map.hasFeatureAtPixel(pixel);
-        console.log('hit is ', hit);
-
-        /*map.on('singleclick', function() {
-            selectInteraction.on('select', function() {
-                console.log('select event was triggered');
-            });
-        });*/
         map.on('singleclick', function() {
-            console.log('singleclick event on map was triggered');
         });
 
         if (hit === true) {
-            console.log('a feature was hit');
             var pointer_coord = map.getEventCoordinate(e.originalEvent);
-            console.log('pointer_coord is ', pointer_coord);
             var closest = getActiveLayerSource().source.getClosestFeatureToCoordinate(pointer_coord);
-            console.log('closest feature is ', closest);
-            console.log('closest feature id is ', closest.getId());
             selectInteraction.getFeatures().clear();
             map.removeInteraction(selectInteraction);
             map.addInteraction(selectInteraction);
             selectInteraction.getFeatures().push(closest);
-            console.log('selectInteraction was pushed with closest');
             putFeaturesToStore();
-            //map.removeInteraction(subSelectionMouseOver);
         }
-        //}
     });
-    //});
-    //deactivateMouseOver();
 };
 
-var deactivateMouseOver = function(event) {
-    event.stopPropagation();
-    map.unByKey('pointermove');
-};
-
-$('#btRmMouseOver').on('click', deactivateMouseOver);
-
-var key = $('#btMouseOver').on('click', stateMouseOver);
-//var key = $('#btMouseOver').on('click', activateMouseOver);
-//ol.Observable.unByKey(key);
-
-/*if (selectInteraction.on('select') === true) {
-    console.log('select event was triggered');
-}*/
-
-
-/*map.on('pointermove', function(e) {
-    //console.log('pointermove was triggered');
-    var pixel = map.getEventPixel(e.originalEvent);
-    //console.log('pixel cooridnate is ', pixel);
-    var hit = map.hasFeatureAtPixel(pixel);
-    //console.log('hit is ', hit);
-
-    if (hit === true) {
-        console.log('a feature was hit');
-        var pointer_coord = map.getEventCoordinate(e.originalEvent);
-        console.log('pointer_coord is ', pointer_coord);
-        var closest = getActiveLayerSource().source.getClosestFeatureToCoordinate(pointer_coord);
-        console.log('closest feature is ', closest);
-        map.addInteraction(mouseOverInteraction);
-        mouseOverInteraction.getFeatures().clear();
-        mouseOverInteraction.getFeatures().push(closest);
-        putFeaturesToStore(closest);
-    } else if (hit === false) {
-        console.log('no feature is hit');
-        map.removeInteraction(mouseOverInteraction);
-    }
-});*/
+// if button mouseover selection is clicked 
+// call function activate mouse over
+$('#btMouseOver').on('click', activateMouseOver);
 
 
 
 // remove features from selection and clear store
+// when map is clicked
 map.on('singleclick', function() {
     selectionStore.removeAll();
     map.removeInteraction(subSelectionMouseOver);
     map.removeInteraction(subSelection);
-    //map.removeInteraction(mouseOverInteraction);
-    //map.removeInteraction(selectInteraction);
-    //map.addInteraction(selectInteraction);
 });
